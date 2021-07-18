@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title">Actualizar Puntos</label>
+  </div>
+</div>
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s12 m12 l6">
+      <label class="filter-label">Tipo de Movimiento</label>
+      <mat-radio-group formControlName="tipoMovimiento" (change)="onChangeSelected($event)"><br>
+        <mat-radio-button value="H" [checked]="true">Agregar</mat-radio-button>
+        <mat-radio-button value="D">Quitar</mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="apiForm.getField('tipoMovimiento').touched && apiForm.getField('tipoMovimiento').errors?.required">
+        Este campo es requerido
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 12">
+      <label class="filter-label">Tipo de Ajuste</label>
+      <ng-container *ngIf="listAjustes == null">
+        <p>
+          <strong><label>Cargando...</label></strong>
+        </p>
+      </ng-container>
+      <ng-container *ngIf="listAjustes != null">
+        <mat-form-field class="select-height-form">
+          <mat-select style="height: 30px;" formControlName="codMovimiento" [errorStateMatcher]="errorMatcher">
+            <mat-option *ngFor="let item of listAjustes" [value]="item.codigo">
+              {{item.codigo}} - {{item.descripcion}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-error *ngIf="apiForm.getField('codMovimiento').touched && apiForm.getField('codMovimiento').errors?.required">
+          Este campo es requerido
+        </mat-error>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <label class="filter-label">Descripción</label>
+      <mat-form-field appearance="fill">
+        <input formControlName="observacion" matInput placeholder="" [errorStateMatcher]="errorMatcher"
+        (keypress)="apiValidator.keyPress($event, ['text']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('observacion').touched && apiForm.getField('observacion').errors?.required">Este campo es obligatorio.</mat-error>
+      <mat-error *ngIf="apiForm.getField('observacion').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col s12 m12 l6">
+      <label class="filter-label">Puntos</label>
+      <mat-form-field appearance="fill">
+        <input formControlName="ptosModificados" matInput placeholder="Puntos" [errorStateMatcher]="errorMatcher"
+        maxlength="8"
+        (keypress)="apiValidator.keyPress($event, ['number']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('ptosModificados').touched && apiForm.getField('ptosModificados').errors?.required">Este campo es obligatorio.</mat-error>
+      <mat-error *ngIf="apiForm.getField('ptosModificados').errors?.pattern">
+        {{apiValidator.patternMessage(['number'], 8)}}
+      </mat-error>
+    </div>
+
+    <div class="col s12 m12 l6">
+      <label class="filter-label">Fecha Vencimiento</label>
+      <mat-form-field appearance="fill">
+        <input formControlName="fechaVencimiento" [errorStateMatcher]="errorMatcher"
+          readonly
+          [min]="minDate"
+          [max]="maxDate"
+          matInput [matDatepicker]="picker1" placeholder="Fecha Vencimiento">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1 startView="month"></mat-datepicker>
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('fechaVencimiento').touched && apiForm.getField('fechaVencimiento').errors?.required">
+        Este campo es requerido
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Guardar</button>
+    </div>
+  </div>
+</form>

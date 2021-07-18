@@ -1,0 +1,141 @@
+<div class="display-flex">
+  <div class="barra-lateral" *ngIf="this._authService.isLogin()">
+    <div class="buttons">
+      <!-- star -->
+      <a class=""><img src="assets/imagenes/estrella.png" alt="" /></a>
+
+      <button [ngClass]="{'btn-option-selected' : showColor && keyId == 1}" matTooltip="Gestión de Reglas" matTooltipPosition="right" mat-icon-button class="btn-option" (click)="showMenu(1); drawer.toggle();">
+        <span class="material-icons">
+          filter_none
+        </span>
+      </button> <br>
+
+      <button [ngClass]="{'btn-option-selected' : showColor && keyId == 2}" matTooltip="Gestión de Cuentas y Puntos" matTooltipPosition="right" mat-icon-button class="btn-option" (click)="showMenu(2); drawer.toggle();" style="margin-top: 20px;">
+        <span class="material-icons">
+          bar_chart
+        </span>
+      </button> <br>
+
+      <button [ngClass]="{'btn-option-selected' : showColor && keyId == 3}" matTooltip="Módulo de Consulta de Clientes" matTooltipPosition="right" mat-icon-button class="btn-option" (click)="showMenu(3); drawer.toggle();" style="margin-top: 20px;">
+        <span class="material-icons">
+          person_search
+        </span>
+      </button> <br>
+
+      <button [ngClass]="{'btn-option-selected' : showColor && keyId == 4}" matTooltip="Módulo de Tablas Maestras" matTooltipPosition="right" mat-icon-button class="btn-option" (click)="showMenu(4); drawer.toggle();" style="margin-top: 20px;">
+        <span class="material-icons">
+          admin_panel_settings
+        </span>
+      </button> <br>
+
+      <button [ngClass]="{'btn-option-selected' : showColor && keyId == 5}" matTooltip="Módulo de Reportes" matTooltipPosition="right" mat-icon-button class="btn-option" (click)="showMenu(5); drawer.toggle();" style="margin-top: 20px;">
+        <span class="material-icons">
+          book_online
+        </span>
+      </button> <br>
+
+      <button [ngClass]="{'btn-option-selected' : showColor && keyId == 6}" matTooltip="Módulo de Emisión de Certificados" matTooltipPosition="right" mat-icon-button class="btn-option" (click)="showMenu(6); drawer.toggle();" style="margin-top: 20px;">
+        <span class="material-icons">
+          home
+        </span>
+      </button> <br>
+    </div>
+  </div>
+
+  <mat-drawer-container class="container-list-options" autosize>
+
+
+    <mat-drawer #drawer class="sidenav-option-detail" mode="over">
+      <div class="menu-title ">
+        SRP
+      </div>
+
+      <div class="">
+        <ul>
+          <!-- margin-top: 30px; -->
+          <li style="margin-top: 18px;" *ngIf="keyId == 1">
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reglas/Acumulacion/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text colour-path" routerLink="/Reglas/Acumulacion/Bandeja">ACUMULACIÓN</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reglas/Canje/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text colour-path" routerLink="/Reglas/Canje/Bandeja">CANJES</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reglas/Valorado/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text colour-path" routerLink="/Reglas/Valorado/Bandeja">VALORADOS</a><br>
+          </li>
+
+          <li style="margin-top: 80px;" *ngIf="keyId == 2">
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Actualizar/Cliente/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Actualizar/Cliente/Bandeja">ACTUALIZACIÓN</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Carga/Campania/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Carga/Campania/Bandeja">CARGAR CAMPAÑAS</a><br>
+          </li>
+
+         <li style="margin-top: 140px;" *ngIf="keyId == 3">
+            <!-- <a [ngClass]="{'colour-path' : ruta.url  == '/BuscarPuntosCuentas'}" class="menu-option-route menu-option-route-text" routerLink="/BuscarPuntosCuentas">BUSCAR PUNTOS CUENTAS</a><br> -->
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Consulta/Cliente/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Consulta/Cliente/Bandeja">CONSULTA CLIENTE</a><br>
+          </li>
+
+          <li style="margin-top: 200px;" *ngIf="keyId == 4">
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Mantenimiento/Parametro/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Parametro/Bandeja">PARÁMETROS</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Mantenimiento/Valorado/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Valorado/Bandeja">VALORADOS</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Mantenimiento/Reporte/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Reporte/Bandeja">REPORTES</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Mantenimiento/Tipo-Cliente/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Tipo-Cliente/Bandeja">TIPO DE CLIENTE</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Mantenimiento/Regla-Vencimiento/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Regla-Vencimiento/Bandeja">REGLAS DE VENCIMIENTO</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Mantenimiento/Tipo-Vencimiento/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Tipo-Vencimiento/Bandeja">TIPOS DE VENCIMIENTO</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Mantenimiento/Sucursal/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Sucursal/Bandeja">SUCURSALES</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Mantenimiento/Email-Proceso/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Email-Proceso/Bandeja">EMAIL POR PROCESO</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Mantenimiento/Stock-Final/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Stock-Final/Bandeja">STOCK FINAL</a><br>
+          </li>
+
+          <li style="margin-top: 260px;" *ngIf="keyId == 5">
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reporte/Error-Proceso/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Reporte/Error-Proceso/Bandeja">ERRORES DE PROCESO</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reporte/Stock-Mensual/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Reporte/Stock-Mensual/Bandeja">STOCK MENSUAL</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reporte/Ajuste/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Reporte/Ajuste/Bandeja">AJUSTES</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reporte/Canje-Establecimiento/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Reporte/Canje-Establecimiento/Bandeja">CANJE ESTABLECIMIENTO</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reporte/Acumulado-Ajuste/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Reporte/Acumulado-Ajuste/Bandeja">ACUMULADO DE AJUSTES</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reporte/Diario-Ajuste/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Reporte/Diario-Ajuste/Bandeja">DIARIO DE AJUSTES</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reporte/Cuadre-Diario/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Reporte/Cuadre-Diario/Bandeja">CUADRE DIARIO</a><br>
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Reporte/Movimiento-Mes/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Reporte/Movimiento-Mes/Bandeja">MOVIMIENTO DEL MES</a><br>
+          </li>
+
+          <li style="margin-top: 320px;" *ngIf="keyId == 6">
+            <a [ngClass]="{'colour-path' : ruta.url  == '/Emision/Certificado/Bandeja'}" (click)="drawer.toggle();" class="menu-option-route menu-option-route-text" routerLink="/Emision/Certificado/Bandeja">EMISIÓN CERTIFICADOS</a><br>
+          </li>
+
+        </ul>
+      </div>
+
+
+    </mat-drawer>
+
+    <div class="example-sidenav-content">
+
+      <div class="box-container" *ngIf="this._authService.isLogin()">
+        <div class="box-left">
+          <div class="text-title-header" *ngIf="isExist">
+            {{title}}
+          </div>
+        </div>
+        <div class="box-right" [matMenuTriggerFor]="menu">
+          <div class="row">
+            <div class="col m6 l6 mt-25">
+              <span class="text-logout">Ruth Salcedo</span>
+            </div>
+            <div class="col s12 m3 l3 mt-13">
+              <button mat-icon-button  >
+                <img src="assets/imagenes/foto-user.png" class="border-radius-40">
+              </button>
+            </div>
+          </div>
+
+          <mat-menu #menu="matMenu" xPosition="after">
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>exit_to_app</mat-icon>
+              <span>Cerrar sesión</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+
+      <router-outlet></router-outlet>
+
+    </div>
+
+  </mat-drawer-container>
+
+</div>
+

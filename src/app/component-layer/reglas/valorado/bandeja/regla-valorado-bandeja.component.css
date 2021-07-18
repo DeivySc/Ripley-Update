@@ -1,0 +1,21 @@
+/* /* **************************************** */
+
+mat-header-cell {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.0125em;
+  color: #523078 !important;
+}
+
+
+
+.fontbase{
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+}

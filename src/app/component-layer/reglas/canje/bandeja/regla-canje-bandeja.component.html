@@ -1,0 +1,211 @@
+<div class="container mt-60">
+
+  <div class="row">
+    <div class="col s12 m3 l3 offset-m9 offset-l9">
+      <button mat-raised-button class="btn-register" (click)="new()">
+        <span class="material-icons">
+          add_box
+        </span>
+        Nueva Regla
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-20">
+
+    <div class="col s12 m12 l12">
+
+      <mat-tab-group mat-align-tabs="start" dynamicHeight [selectedIndex]="0">
+
+        <mat-tab label="Reglas en Vigencia">
+          <div class="table-lista">
+            <table mat-table matSort [dataSource]="list[0].source" (matSortChange)="list[0].onSortChange($event)">
+              <ng-container matColumnDef="codigo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-120px'">Código</mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'w-120px'">{{element.id}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="descripcion">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'w-240px'">Descripción</mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'w-240px'">{{element.descTarjeta}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="puntaje">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'w-240px'">Puntaje</mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'w-240px'">{{parseIntegerField(element.valorPuntaje)}} {{element.descTipPuntaje}} /
+                  {{element.valorSoles}} Soles</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="inicio">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Inicio de Vigencia</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.inicioVigencia}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="fin">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Fin de Vigencia</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.finVigencia}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="vigencia">
+                <mat-header-cell *matHeaderCellDef>Vigencia</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <div *ngIf="element.vigencia == '1' " class="span-block">
+                    <span class="badge badge-active">
+                      Activo
+                    </span>
+                  </div>
+                  <div *ngIf="element.vigencia == '0' " class="span-block">
+                    <span class="badge badge-inactive">
+                      Inactivo
+                    </span>
+                  </div>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="editar">
+                <mat-header-cell *matHeaderCellDef>
+                  <div class="w-100 text-r">
+                    Editar
+                  </div>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <div class="w-100 text-r">
+                    <button mat-icon-button (click)="edit(row)">
+                      <span class="material-icons btn-actions">
+                        edit
+                      </span>
+                    </button>
+                  </div>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="eliminar">
+                <mat-header-cell *matHeaderCellDef>
+                  <div class="w-100 text-r">
+                    Eliminar
+                  </div>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <div class="w-100 text-r">
+                    <button mat-icon-button color="warn" (click)="delete(row)">
+                      <span class="material-icons btn-action-delete">
+                        delete
+                      </span>
+                    </button>
+                  </div>
+                </mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Cargando información...
+                </mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Ningún Resultado.
+                </mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="error">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Error en la consulta
+                </mat-footer-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="list[0].columns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: list[0].columns;"></mat-row>
+              <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list[0].isSearching)}"></mat-footer-row>
+              <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list[0].isError)}"></mat-footer-row>
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list[0].isSearching && ! list[0].isError) ? (list[0].source.length > 0) : true)}">
+              </mat-footer-row>
+            </table>
+
+            <mat-paginator #TableOnePaginator="matPaginator" [length]="list[0].length" [pageSize]="list[0].size"
+              [pageSizeOptions]="list[0].pageSizeOptions" (page)="list[0].onPageChange($event)"
+              showFirstLastButtons>
+            </mat-paginator>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Reglas Históricas">
+          <div class="table-lista">
+            <table mat-table matSort [dataSource]="list[1].source" (matSortChange)="list[1].onSortChange($event)">
+              <ng-container matColumnDef="codigo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-120px'">Código</mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'w-120px'">{{element.id}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="descripcion">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'w-240px'">Descripción</mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'w-240px'">{{element.descTarjeta}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="puntaje">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'w-240px'">Puntaje</mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'w-240px'">{{parseIntegerField(element.valorPuntaje)}} {{element.descTipPuntaje}} /
+                  {{element.valorSoles}} Soles</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="inicio">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Inicio de Vigencia</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.inicioVigencia}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="fin">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Fin de Vigencia</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.finVigencia}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="vigencia">
+                <mat-header-cell *matHeaderCellDef>Vigencia</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <div *ngIf="element.vigencia == '1' " class="span-block">
+                    <span class="badge badge-active">
+                      Activo
+                    </span>
+                  </div>
+                  <div *ngIf="element.vigencia == '0' " class="span-block">
+                    <span class="badge badge-inactive">
+                      Inactivo
+                    </span>
+                  </div>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="estado">
+                <mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <div *ngIf="element.estado == '1' " class="span-block">
+                    <span class="badge badge-active">
+                      Activo
+                    </span>
+                  </div>
+                  <div *ngIf="element.estado == '0' " class="span-block">
+                    <span class="badge badge-inactive">
+                      Inactivo
+                    </span>
+                  </div>
+                </mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Cargando información...
+                </mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Ningún Resultado.
+                </mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="error">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Error en la consulta
+                </mat-footer-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="list[1].columns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: list[1].columns;"></mat-row>
+              <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list[1].isSearching)}"></mat-footer-row>
+              <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list[1].isError)}"></mat-footer-row>
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list[1].isSearching && ! list[1].isError) ? (list[1].source.length > 0) : true)}">
+              </mat-footer-row>
+            </table>
+            <mat-paginator #TableTwoPaginator="matPaginator" [length]="list[1].length" [pageSize]="list[1].size"
+              [pageSizeOptions]="list[1].pageSizeOptions" (page)="list[1].onPageChange($event)"
+              showFirstLastButtons>
+            </mat-paginator>
+          </div>
+
+        </mat-tab>
+
+      </mat-tab-group>
+
+    </div>
+  </div>
+</div>

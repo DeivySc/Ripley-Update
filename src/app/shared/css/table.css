@@ -1,0 +1,43 @@
+.remove-line {
+  padding: 0;
+  border-bottom-width: none !important;
+  border-bottom-style: none !important;
+}
+
+.colour-header {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.0125em;
+  color: #523078;
+}
+
+
+.table-lista {
+  border: 1px solid #dad1d1;
+  box-sizing: border-box;
+  border-radius: 10px #dad1d1;
+  box-shadow: inset 1px 1px 1px 0px #999999;
+}
+
+/* mat-header-cell {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.0125em;
+  color: #523078 !important;
+} */
+
+

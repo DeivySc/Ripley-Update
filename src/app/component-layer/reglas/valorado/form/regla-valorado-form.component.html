@@ -1,0 +1,185 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title" *ngIf="data.isEdit === false">Nueva Regla de Valorado</label>
+    <label class="title" *ngIf="data.isEdit === true">Editar Regla de Valorado</label>
+  </div>
+</div>
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s12 m12 l12" *ngIf="data.isEdit == true">
+      <label class="filter-label">Código</label>
+      <br>
+      <mat-form-field>
+        <input matInput  class="input-height-form" value="{{apiForm.model?.id}}" disabled>
+      </mat-form-field>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col s12 m12 12">
+      <label class="filter-label">Establecimiento</label>
+      <ng-container *ngIf="establecimientos == null">
+        <p>
+          <strong><label>Cargando...</label></strong>
+        </p>
+      </ng-container>
+      <ng-container *ngIf="establecimientos != null">
+        <mat-form-field class="select-height-form">
+          <mat-select style="height: 30px;" formControlName="codEstablecimiento" [errorStateMatcher]="errorMatcher" (selectionChange)="selectedValueEstablecimiento($event)">
+            <mat-option *ngFor="let establecimiento of establecimientos" [value]="establecimiento.id">
+              {{establecimiento.descripcion}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-error *ngIf="apiForm.getField('codEstablecimiento').touched && apiForm.getField('codEstablecimiento').errors?.required">
+          Este campo es requerido
+        </mat-error>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 12">
+      <label class="filter-label">Valorado</label>
+      <ng-container *ngIf="valorados == null && apiForm.getField('codEstablecimiento').value == ''">
+        <p>
+          <strong><label>Seleccione un establecimiento</label></strong>
+        </p>
+      </ng-container>
+      <ng-container *ngIf="valorados == null && apiForm.getField('codEstablecimiento').value != ''">
+        <p>
+          <strong><label>Cargando...</label></strong>
+        </p>
+      </ng-container>
+      <ng-container *ngIf="valorados != null">
+        <ng-container *ngIf="valorados.length == 0">
+          <p>
+            <strong><label>No existen valorados para este establecimiento</label></strong>
+          </p>
+        </ng-container>
+        <ng-container *ngIf="valorados.length > 0">
+          <mat-form-field class="select-height-form">
+            <mat-select style="height: 30px;" formControlName="valorado" [errorStateMatcher]="errorMatcher">
+              <mat-option *ngFor="let valorado of valorados" [value]="valorado.id">
+                {{valorado.descripcion}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-error *ngIf="apiForm.getField('valorado').touched && apiForm.getField('valorado').errors?.required">
+            Este campo es requerido
+          </mat-error>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l6">
+      <label class="filter-label">Factor</label>
+      <mat-form-field appearance="fill">
+        <input formControlName="factor" matInput placeholder="Factor" [errorStateMatcher]="errorMatcher"
+        (keypress)="apiValidator.keyPress($event, ['decimal']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('factor').touched && apiForm.getField('factor').errors?.required">Este campo es obligatorio.</mat-error>
+      <mat-error *ngIf="apiForm.getField('factor').errors?.pattern">
+        {{apiValidator.patternMessage(['decimal'], 2, 9)}}
+      </mat-error>      
+      <mat-error *ngIf="apiForm.getField('factor').errors?.min">Este campo debe ser mayor a 0</mat-error>
+      <mat-error *ngIf="apiForm.getField('factor').errors?.max">Este campo debe ser menor a 100</mat-error>
+    </div>
+    <div class="col s12 m12 l6">
+      <label class="filter-label">Puntaje Mínimo</label>
+      <mat-form-field appearance="fill">
+        <input formControlName="puntajeMinimo" matInput placeholder="Puntaje Mínimo" [errorStateMatcher]="errorMatcher"
+        (keypress)="apiValidator.keyPress($event, ['decimal']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('puntajeMinimo').touched && apiForm.getField('puntajeMinimo').errors?.required">Este campo es obligatorio.</mat-error>
+      <mat-error *ngIf="apiForm.getField('puntajeMinimo').errors?.pattern">
+        {{apiValidator.patternMessage(['decimal'], 6, 2)}}
+      </mat-error> 
+      <mat-error *ngIf="apiForm.getField('puntajeMinimo').errors?.min">Este campo debe ser mayor o igual a 1.00</mat-error>
+      <mat-error *ngIf="apiForm.getField('puntajeMinimo').errors?.max">Este campo debe ser menor o igual a 999,999.00</mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l6">
+      <label class="filter-label">Inicio de Vigencia</label>
+      <mat-form-field appearance="fill" *ngIf="! data.isEdit">
+        <input 
+          formControlName="inicioVigencia"
+          [errorStateMatcher]="errorMatcher"
+          (keypress)="apiValidator.keyPress($event, ['date']);"
+          readonly
+          [min]="minDateStart"
+          matInput            
+          [matDatepicker]="picker1"
+          placeholder="Inicio de Vigencia"
+          (dateChange)="getChange($event)"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1 startView="month"></mat-datepicker>
+      </mat-form-field>      
+      <mat-form-field appearance="fill" *ngIf="data.isEdit">
+        <input
+          formControlName="inicioVigencia"
+          readonly
+          matInput
+          value="apiForm.model?.inicioVigencia"
+          (keypress)="apiValidator.keyPress($event, ['date']);"
+        />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('inicioVigencia').touched && apiForm.getField('inicioVigencia').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('inicioVigencia').errors?.pattern">
+        {{apiValidator.patternMessage(['date'])}}
+      </mat-error> 
+    </div>
+
+    <div class="col s12 m12 l6">
+      <label class="filter-label">Fin de Vigencia</label>
+      <mat-form-field appearance="fill">
+        <input 
+          matInput
+          formControlName="finVigencia"
+          [min]="minDateEnd"
+          [matDatepicker]="picker2"
+          [errorStateMatcher]="errorMatcher"
+          placeholder="Fin de Vigencia"
+          readonly
+          (keypress)="apiValidator.keyPress($event, ['date']);"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('finVigencia').touched && apiForm.getField('finVigencia').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('finVigencia').errors?.pattern">
+        {{apiValidator.patternMessage(['date'])}}
+      </mat-error> 
+    </div>
+  </div>
+
+  <div class="row mt-40">
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === false">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Guardar</button>
+    </div>
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === true">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Actualizar</button>
+    </div>
+  </div>
+
+</form>

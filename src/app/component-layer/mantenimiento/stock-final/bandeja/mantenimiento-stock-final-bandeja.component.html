@@ -1,0 +1,146 @@
+<div class="container mt-60">
+
+  <div class="row">
+    <div class="col s6 m9 l9">
+      <form [formGroup]="apiForm.formGroup" novalidate>
+        <div class="row">          
+          <div class="col s6 m6 l6">
+            <label class="filter-label">Mes</label><br>
+            <ng-container *ngIf="meses == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="meses != null">
+              <mat-form-field class="select-height-form w-100 mt-35">
+                <mat-select id="mes" formControlName="mes">
+                  <mat-option *ngFor="let mes of meses" [value]="mes.descripcion">
+                    {{mes.comentario}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+            <mat-error *ngIf="apiForm.getField('mes').touched && apiForm.getField('mes').errors?.required">
+              Este campo es requerido
+            </mat-error>
+          </div>          
+          <div class="col s6 m6 l6">
+            <label class="filter-label">Año</label><br>
+            <ng-container>
+              <mat-form-field class="select-height-form w-100">
+                <mat-form-field>
+                  <input id="año" matInput formControlName="anio" class="input-height-form"
+                  (keypress)="apiValidator.keyPress($event, ['number']);"
+                  maxlength="4" minlength="4">
+                </mat-form-field>
+                <mat-error *ngIf="apiForm.getField('anio').touched && apiForm.getField('anio').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+                <mat-error *ngIf="apiForm.getField('anio').errors?.pattern">
+                  Este campo debe ser numérico
+                </mat-error>
+                <mat-error *ngIf="apiForm.getField('anio').errors?.maxlength">
+                  Este campo debe tener 4 dígitos como máximo
+                </mat-error>
+                <mat-error *ngIf="apiForm.getField('anio').errors?.minlength">
+                  Este campo debe tener 4 dígitos como mínimo
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+        <div class="row">      
+          <div class="col s6 m6 l6 mt-20">
+            <label class="filter-label">Tipo de Sub Producto:</label><br>      
+            <div class="col s12 m12 l12" class="lista-tarjeta" style="padding-right: 0;">
+              <mat-selection-list id="listaTarjetas" formControlName="listaTarjetas"
+                appearance="fill">
+                <mat-list-option *ngFor="let tipoTarjeta of tiposTarjeta" [value]="tipoTarjeta.id" color="primary">
+                  {{tipoTarjeta.descripcion}}
+                </mat-list-option>
+              </mat-selection-list>
+              <mat-error *ngIf="apiForm.getField('listaTarjetas').touched && apiForm.getField('listaTarjetas').errors?.required">
+                Este campo es requerido
+              </mat-error>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col s6 m3 l3 mt-35">
+      <button mat-raised-button class="btn-register" [disabled]="apiForm.formGroup.invalid" (click)="process()">
+        <span class="material-icons">
+          build
+        </span>
+        Procesar Stock
+      </button>
+    </div>
+  </div>
+  
+  <div class="row mt-20">
+    <div class="col s12 m12 l12">
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="list?.source" (matSortChange)="list.onSortChange($event)">
+          <ng-container matColumnDef="codigo">
+            <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-120px'">Código</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-120px'">{{element.codigo}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="descripcion">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-360px'">Descripción</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-360px'">{{element.descripcion}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="descripcionTipoMovimiento">
+            <mat-header-cell *matHeaderCellDef>Tipo de Movimiento</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.descripcionTipoMovimiento}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="comentario">
+            <mat-header-cell *matHeaderCellDef>Comentario</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.comentario}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="tarjeta">
+            <mat-header-cell *matHeaderCellDef>Tarjeta</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.tarjeta}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="unidades">
+            <mat-header-cell *matHeaderCellDef>Unidades</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.unidades}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="valorSoles">
+            <mat-header-cell *matHeaderCellDef>Valor en Soles</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.valorSoles}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="usuario">
+            <mat-header-cell *matHeaderCellDef>Usuario</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.usuario}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="list?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: list?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list?.isSearching && ! list?.isError) ? (list?.length > 0) : true)}">
+          </mat-footer-row>
+        </table>
+        <mat-paginator #TablePaginator="matPaginator" [length]="list?.length" [pageSize]="list?.size"
+          [pageSizeOptions]="list?.pageSizeOptions" (page)="list?.onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

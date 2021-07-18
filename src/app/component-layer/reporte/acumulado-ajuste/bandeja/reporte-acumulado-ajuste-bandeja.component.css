@@ -1,0 +1,39 @@
+.table-lista {
+  border: 1px solid #dad1d1;
+  box-sizing: border-box;
+  border-radius: 10px #dad1d1;
+  box-shadow: inset 1px 1px 1px 0px #999999;
+}
+
+mat-header-cell {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.0125em;
+  color: #523078;
+}
+
+.btn-report {
+  background: #624792;
+  box-shadow: 0px 0px 8px rgba(26, 41, 182, 0.15);
+  border-radius: 10px;
+  font-family: Poppins, Verdana, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15.6222px;
+  line-height: 27px;
+  letter-spacing: 0.732292px;
+  color: #f6f6f6;
+  height: 60px;
+  width: 100%;
+}
+
+.w-100{
+  width: 100% !important;
+}

@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title" *ngIf="data.isEdit === false">Nueva Regla de Vencimiento</label>
+    <label class="title" *ngIf="data.isEdit === true">Editar Regla de Vencimiento</label>
+  </div>
+</div>
+
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s12 m12 12">
+      <label class="filter-label">Tipo de Cliente</label>
+      <ng-container *ngIf="!data.isEdit">     
+        <ng-container *ngIf="tiposCliente == null">
+          <p>
+            <strong><label>Cargando...</label></strong>
+          </p>
+        </ng-container>
+        <ng-container *ngIf="tiposCliente != null">
+          <mat-form-field class="select-height-form">
+            <mat-select style="height: 30px;" formControlName="tipoCliente" [errorStateMatcher]="errorMatcher"
+            (selectionChange)="onChangeSelected($event)">
+              <mat-option *ngFor="let item of tiposCliente" [value]="item.id">
+                {{item.descripcion}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-error *ngIf="apiForm.getField('tipoCliente').touched && apiForm.getField('tipoCliente').errors?.required">
+            Este campo es requerido
+          </mat-error>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="data.isEdit">        
+        <mat-form-field>
+          <input matInput class="input-height-form" value="{{apiForm.model?.descripcionTipoCliente}}" disabled />
+        </mat-form-field>
+      </ng-container>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 m12 12">
+      <label class="filter-label">Tipo de Movimiento</label> 
+      <ng-container *ngIf="!data.isEdit">     
+        <ng-container *ngIf="tiposMovimiento == null && apiForm.getField('tipoCliente').value == ''">
+          <p>
+            <strong><label>Seleccione un Tipo de Cliente</label></strong>
+          </p>
+        </ng-container>
+        <ng-container *ngIf="tiposMovimiento == null && apiForm.getField('tipoCliente').value != ''">
+          <p>
+            <strong><label>Cargando...</label></strong>
+          </p>
+        </ng-container>
+        <ng-container *ngIf="tiposMovimiento != null">
+          <ng-container *ngIf="tiposMovimiento.length == 0">
+            <p>
+              <strong><label>No existen tipos de movimiento disponibles</label></strong>
+            </p>
+          </ng-container>
+          <ng-container *ngIf="tiposMovimiento.length > 0">
+            <mat-form-field class="select-height-form">
+              <mat-select style="height: 30px;" formControlName="tipoMovimiento" [errorStateMatcher]="errorMatcher">
+                <mat-option *ngFor="let item of tiposMovimiento" [value]="item.codigo">
+                  {{item.codigo}} - {{item.descripcion}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-error *ngIf="apiForm.getField('tipoMovimiento').touched && apiForm.getField('tipoMovimiento').errors?.required">
+              Este campo es requerido
+            </mat-error>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="data.isEdit">
+        <mat-form-field>
+          <input matInput class="input-height-form" value="{{apiForm.model?.descripcionMovimiento}}" disabled>
+        </mat-form-field>
+      </ng-container>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 m12 12">
+      <label class="filter-label">Periodo</label>
+      <mat-form-field class="select-height-form">
+        <mat-select style="height: 30px;" formControlName="periodo" value="{{apiForm.model?.periodo}}" [errorStateMatcher]="errorMatcher">
+          <mat-option *ngFor="let item of periodos" [value]="item.codigo">
+            {{item.descripcion}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="apiForm.getField('periodo').touched && apiForm.getField('periodo').errors?.required">
+          Este campo es requerido
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === false">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Guardar</button>
+    </div>
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === true">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Actualizar</button>
+    </div>
+  </div>
+</form>

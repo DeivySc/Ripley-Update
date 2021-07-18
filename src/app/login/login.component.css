@@ -1,0 +1,343 @@
+.input-usuario {
+  height: 50px;
+  width: 30%;
+  left: 497px;
+  top: 433px;
+  border-radius: 10px;
+  position: absolute;
+  left: 34.51%;
+  right: 34.44%;
+  top: 42.29%;
+  bottom: 50.88%;
+  background: #ffffff;
+  border: 1px solid #978fc7;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.input-contraseña {
+  height: 50px;
+  width: 30%;
+  left: 497px;
+  top: 433px;
+  border-radius: 10px;
+  position: absolute;
+  left: 34.51%;
+  right: 34.44%;
+  top: 350px;
+  bottom: 50.88%;
+  background: #ffffff;
+  border: 1px solid #978fc7;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.button-login {
+  position: absolute;
+  width: 30%;
+  height: 50px;
+  background: #523078;
+  border-radius: 10px;
+  color: #f7f7fc;
+  top: 420px;
+  left: 465px;
+}
+
+h1 {
+  position: absolute;
+  height: 60px;
+  width: 179px;
+  left: 455px;
+  top:70px;
+  border-radius: nullpx;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 49px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 60px;
+  letter-spacing: -0.07em;
+  text-align: center;
+  color: #523078;
+}
+
+h2 {
+  position: absolute;
+  height: 96px;
+  width: 480px;
+  left: 430px;
+  /* top: 80px; */
+  top: 128px;
+  border-radius: nullpx;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 79px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 96px;
+  letter-spacing: -0.07em;
+  text-align: center;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 79px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 96px;
+  letter-spacing: -0.07em;
+  text-align: center;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 79px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 96px;
+  letter-spacing: -0.07em;
+  text-align: center;
+  color: #523078;
+}
+
+.link-ayuda {
+  position: absolute;
+  left: 43%;
+  right: 40%;
+  top: 77%;
+  bottom: 24.41%;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.0025em;
+  text-decoration-line: underline;
+  color: #626262;
+}
+
+.bgcolor {
+  background: #626262;
+}
+
+.login-vector {
+  position: absolute;
+  left: 15%;
+  right: -15.14%;
+  bottom: -34.28%;
+  background: #dbdbdb;
+  opacity: 0.2;
+  background: url(../imagenes/login-vector.jpg);
+}
+
+::-webkit-input-placeholder {
+  color: #523078;
+}
+::-moz-placeholder {
+  color: #523078;
+}
+
+.alert-usuario {
+  position: absolute;
+  color: #523078;
+  left: 880px;
+  top: 290px;
+}
+
+.alert-password {
+  position: absolute;
+  color: #523078;
+  left: 880px;
+  top: 370px;
+}
+
+.alert-session {
+  position: absolute;
+  color: #523078;
+  left: 555px;
+  top: 550px;
+}
+
+.limiter {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.container-login100 {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.span-sistema {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 49px;
+  line-height: 60px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.07em;
+  color: #523078;
+}
+.span-ripley-puntos {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 79px;
+  line-height: 96px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.07em;
+  color: #523078;
+}
+.wrap-input100 {
+  /* width: 100%; */
+  position: relative;
+  background-color: #f7f7f7;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  width: 447px;
+  height: 70px;
+  background: #ffffff;
+  border: 1px solid #978fc7;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding-left: 15px;
+}
+
+.container-login100-form-btn {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.btn-form-login {
+  /* width: 100%; */
+  position: relative;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  width: 447px;
+  height: 70px;
+  background: #523078;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding-left: 15px;
+  color: #f7f7fc;
+
+  /* display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px; */
+  /* width: 100%; */
+  /* width: 77%; */
+
+  /* font-size: 16px; */
+  /* color: #fff; */
+  /* line-height: 1.2; */
+/*
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+  position: relative;
+  z-index: 1; */
+
+  /* height: 60px;
+  background: #523078;
+  border-radius: 10px;
+  color: #f7f7fc; */
+}
+
+.href-help {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  /* display: flex; */
+  /* align-items: center; */
+  text-align: center;
+  letter-spacing: 0.0025em;
+  text-decoration-line: underline;
+  width: 447px;
+  /* D2 */
+
+  color: #626262;
+}
+
+/* //mobile */
+@media only screen and (max-width: 600px) {
+  .wrap-input100 {
+    width: 100%;
+  }
+
+  .container-login100{
+    margin-left: 40px;
+  }
+
+  .btn-form-login{
+    width: 100%;
+  }
+
+  .href-help{
+    width: 100%;
+  }
+
+}
+
+/* tablet */
+@media only screen and (max-width: 601px) {
+  .wrap-input100 {
+    width: 100%;
+  }
+
+  .btn-form-login{
+    width: 100%;
+  }
+
+  .href-help{
+    width: 100%;
+  }
+
+}
+@media only screen and (max-width: 991px) {
+  .wrap-input100 {
+    width: 100%;
+  }
+
+  .btn-form-login{
+    width: 100%;
+  }
+
+  .href-help{
+    width: 100%;
+  }
+}
+
+/* desktop devices */
+@media only screen and (max-width: 992px) {
+
+
+}
+/* Large desktop devices */
+@media only screen and (max-width: 1200px) {
+
+}

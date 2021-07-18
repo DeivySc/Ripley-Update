@@ -1,0 +1,227 @@
+<div class="container mt-60">
+
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <form [formGroup]="apiForm.formGroup" submit="search()" novalidate>
+        <div class="row">
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Filtrar por Apellido Paterno</label><br>            
+            <ng-container>
+              <mat-form-field class="select-height-form w-100">
+                <mat-form-field>
+                  <input matInput formControlName="apellidoPaterno" class="input-height-form"
+                    (keypress)="apiValidator.keyPress($event, ['name']);"
+                   />
+                </mat-form-field>
+                <mat-error *ngIf="apiForm.getField('apellidoPaterno').touched && apiForm.getField('apellidoPaterno').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+                <mat-error *ngIf="apiForm.getField('apellidoPaterno').errors?.pattern">
+                  {{apiValidator.patternMessage(['name'])}}
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Filtrar por Apellido Materno</label><br>            
+            <ng-container>
+              <mat-form-field class="select-height-form w-100">
+                <mat-form-field>
+                  <input matInput formControlName="apellidoMaterno" class="input-height-form"
+                  (keypress)="apiValidator.keyPress($event, ['name']);"
+                   />
+                </mat-form-field>
+                <mat-error *ngIf="apiForm.getField('apellidoMaterno').touched && apiForm.getField('apellidoMaterno').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+                <mat-error *ngIf="apiForm.getField('apellidoMaterno').errors?.pattern">
+                  {{apiValidator.patternMessage(['name'])}}
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Filtrar por Nombres</label><br>            
+            <ng-container>
+              <mat-form-field class="select-height-form w-100">
+                <mat-form-field>
+                  <input matInput formControlName="nombres" class="input-height-form"
+                  (keypress)="apiValidator.keyPress($event, ['name']);"
+                   />
+                </mat-form-field>
+                <mat-error *ngIf="apiForm.getField('nombres').touched && apiForm.getField('nombres').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+                <mat-error *ngIf="apiForm.getField('nombres').errors?.pattern">
+                  {{apiValidator.patternMessage(['name'])}}
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+        <div class="row"><br />
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Filtrar por Tipo de Documento</label><br>
+            <ng-container *ngIf="tiposDocumento == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="tiposDocumento != null">
+              <mat-form-field class="select-height-form w-100 mt-20">
+                <mat-select style="height: 30px;" formControlName="tipoDocumento"
+                  [errorStateMatcher]="errorMatcher">
+                  <mat-option [value]="">Seleccionar</mat-option>
+                  <mat-option *ngFor="let item of tiposDocumento" [value]="item.codigo">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('tipoDocumento').touched && apiForm.getField('tipoDocumento').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Filtrar por Número de Documento</label><br>            
+            <ng-container>
+              <mat-form-field class="select-height-form w-100">
+                <mat-form-field>
+                  <input matInput formControlName="numeroDocumento" class="input-height-form"
+                      (keypress)="apiValidator.keyPress($event, ['number']);"
+                      maxlength="12"
+                   />
+                </mat-form-field>
+                <mat-error *ngIf="apiForm.getField('numeroDocumento').touched && apiForm.getField('numeroDocumento').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+                <mat-error *ngIf="apiForm.getField('numeroDocumento').errors?.pattern">
+                  {{apiValidator.patternMessage(['number'])}}
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+          <div class="col s4 m4 l4 mt-35">
+            <div class="w-100 text-r mt-20">
+              <button mat-raised-button class="btn-primary" (click)="search()">
+                <span class="material-icons">
+                  search_box
+                </span>
+                Buscar
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="row mt-20">
+    <div class="col s12 m12 l12">
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="list?.source" #TableOneSort="matSort">
+          <ng-container matColumnDef="numeroTarjeta">
+            <mat-header-cell *matHeaderCellDef>Número de Tarjeta</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.numeroTarjeta}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="nombre">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-280px'">Apellidos y Nombres</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-280px'">{{element.apellidoPaterno}} {{element.apellidoMaterno}} {{element.nombres}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="tipoDocumento">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-100px'">Tipo Doc.</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-100px'">{{element.descripcionDocumento}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="numeroDocumento">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-140px'">Número Doc.</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-140px'">{{element.numeroDocumento}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Puntos">
+            <mat-header-cell *matHeaderCellDef>Puntos</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.ptosDisponibles}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="estado">
+            <mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <div *ngIf="element.estado == '1' " class="span-block">
+                <span class="badge badge-active">
+                  Activo
+                </span>
+              </div>
+              <div *ngIf="element.estado == '0' " class="span-block">
+                <span class="badge badge-inactive">
+                  Inactivo
+                </span>
+              </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="seleccionar" *ngIf="! isCertificate">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="w-100 text-r">
+                Seleccionar
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="w-100 text-r">
+                <button mat-icon-button (click)="select(row)">
+                  <span class="material-icons">
+                    zoom_in
+                  </span>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="seleccionar" *ngIf="isCertificate">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="w-100 text-r">
+                Emitir
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="w-100 text-r" *ngIf="row.ptosDisponibles > 0">
+                <button mat-icon-button (click)="certificate(row)">
+                  <span class="material-icons">
+                    verified_user
+                  </span>
+                </button>
+              </div>
+              <div class="w-100 text-r" *ngIf="row.ptosDisponibles == 0">
+                <button mat-icon-button (click)="uncertificate(row)">
+                  <span class="material-icons">
+                    web_asset_off
+                  </span>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="list?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: list?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list?.isSearching && ! list?.isError) ? (list?.length > 0) : true)}">
+          </mat-footer-row>
+        </table>
+        <mat-paginator #TablePaginator="matPaginator" [length]="list?.length" [pageSize]="list?.size"
+          [pageSizeOptions]="list?.pageSizeOptions" (page)="list?.onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,174 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title" *ngIf="data.isEdit === false">Nuevo Valorado</label>
+    <label class="title" *ngIf="data.isEdit === true">Editar Valorado</label>
+  </div>
+</div>
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s4" *ngIf="_service.isEditing == true">
+      <label class="filter-label">Código: </label>
+      <mat-form-field appearance="fill">
+        <input matInput class="input-height-form" value="{{apiForm.model?.codigoEstablecimiento}}" disabled
+        (keypress)="apiValidator.keyPress($event, ['number']);" />
+      </mat-form-field>
+    </div>  
+  </div>
+  <div class="row">
+    <div class="col s12 m12 l4">
+      <label class="filter-label">Valorado</label>
+      <mat-form-field appearance="fill">
+        <input formControlName="descripcionValorado" id="descripcionValorado" matInput          
+          placeholder="Añade el Valorado" maxlength="101"
+          (keypress)="apiValidator.keyPress($event, ['text']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('descripcionValorado').touched && apiForm.getField('descripcionValorado').errors?.required">Este campo es
+        obligatorio.
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('descripcionValorado').errors?.maxlength">
+        Este campo debe tener 100 dígitos como máximo
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('descripcionValorado').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+
+    <div class="col s12 m12 l4">
+      <label class="filter-label">Establecimiento</label>
+      <mat-form-field appearance="fill">
+        <input
+          formControlName="razonSocialEstablecimiento"
+          matInput
+          placeholder="Establecimiento"
+          [errorStateMatcher]="errorMatcher"
+          (keypress)="apiValidator.keyPress($event, ['text']);" 
+        />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('razonSocialEstablecimiento').touched && apiForm.getField('razonSocialEstablecimiento').errors?.required">Este
+        campo
+        es obligatorio.
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('razonSocialEstablecimiento').errors?.maxlength">
+        Este campo debe tener 100 dígitos como máximo
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('razonSocialEstablecimiento').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+
+    <div class="col s12 m12 l4">
+      <label class="filter-label">RUC</label>
+      <mat-form-field appearance="fill">
+        <input formControlName="rucEstablecimiento" id="rucEstablecimiento" matInput
+          placeholder="Añade el Número de Ruc"
+          (keypress)="apiValidator.keyPress($event, ['number']);"
+          maxlength="11" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('rucEstablecimiento').touched && apiForm.getField('rucEstablecimiento').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('rucEstablecimiento').errors?.minlength">
+        Este campo debe tener 11 dígitos como mínimo
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('rucEstablecimiento').errors?.maxlength">
+        Este campo debe tener 11 dígitos como máximo
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('rucEstablecimiento').errors?.pattern">
+        {{apiValidator.patternMessage(['number'], 11)}}
+      </mat-error>
+    </div>
+  </div>
+  <ng-container *ngIf="data.isEdit == true">
+    <div class="row mt-20">
+      <div class="col s12 m9 l9">
+        <label class="filter-label">Listado de sucursales</label>
+      </div>
+      <div class="col s12 m3 l3 text-r">
+        <button mat-raised-button class="btn-new-customer" (click)="newSucursal()">
+          <span class="material-icons">
+            add_box
+          </span>
+          Agregar Sucursal
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12 m12 l12">
+        <div class="table-lista">
+          <table mat-table matSort [dataSource]="list.source">
+            <ng-container matColumnDef="codigo">
+              <mat-header-cell *matHeaderCellDef>Código</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.codigoSucursal}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="descripcion">
+              <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.descripcionSucursal}}</mat-cell>
+            </ng-container>  
+            <ng-container matColumnDef="eliminar">
+              <mat-header-cell *matHeaderCellDef class="text-r">
+                <div class="w-100">
+                  Eliminar
+                </div>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row" class="text-r">
+                <div class="w-100">
+                  <button mat-icon-button color="warn" (click)="deleteSucursal(row)">
+                    <span class="material-icons btn-action-delete">
+                      delete
+                    </span>
+                  </button>
+                </div>
+              </mat-cell>
+            </ng-container>
+          
+            <ng-container matColumnDef="loading">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                Cargando información...
+              </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="noData">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                Ningún Resultado.
+              </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="error">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                Error en la consulta
+              </mat-footer-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="list.columns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: list.columns;"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list.isSearching)}"></mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list.isError)}"></mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list.isSearching && ! list.isError) ? (list.source.length > 0) : true)}">
+            </mat-footer-row>
+          </table>
+          <mat-paginator [length]="list.length" [pageSize]="list.size"
+            [pageSizeOptions]="list.pageSizeOptions" (page)="list.onPageChange($event)"
+            showFirstLastButtons>
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="row mt-60">
+    <div class="col s6 m6 l4 offset-m6 offset-l8" *ngIf="data.isEdit === false">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Guardar</button>
+    </div>
+    <div class="col s6 m6 l4 offset-m6 offset-l8" *ngIf="data.isEdit === true">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Actualizar</button>
+    </div>
+  </div>
+</form>

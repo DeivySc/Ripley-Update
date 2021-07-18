@@ -1,0 +1,98 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title" *ngIf="data.isEdit === false">Nuevo E-mail por Proceso</label>
+    <label class="title" *ngIf="data.isEdit === true">Editar E-mail por Proceso</label>
+  </div>
+</div>
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s12 m12 12">
+      <label class="filter-label">Proceso</label>
+      <ng-container *ngIf="tiposProceso == null">
+        <p>
+          <strong><label>Cargando...</label></strong>
+        </p>
+      </ng-container>
+      <ng-container *ngIf="tiposProceso != null">
+        <mat-form-field class="select-height-form">
+          <mat-select style="height: 30px;" formControlName="tipoProceso" [errorStateMatcher]="errorMatcher">
+            <mat-option *ngFor="let item of tiposProceso" [value]="item.codigo">
+              {{item.nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-error *ngIf="apiForm.getField('tipoProceso').touched && apiForm.getField('tipoProceso').errors?.required">
+          Este campo es requerido
+        </mat-error>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <label class="filter-label">Tipo de envío</label>
+      <mat-form-field  class="select-height-form">
+        <mat-select style="height: 30px;" formControlName="tipoEnvio" [errorStateMatcher]="errorMatcher">
+          <mat-option *ngFor="let item of tiposEnvio" [value]="item.descripcion">
+            {{item.comentario}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('tipoEnvio').touched && apiForm.getField('tipoEnvio').errors?.required">
+        Este campo es requerido
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <label class="filter-label">Nombre de usuario</label>
+      <mat-form-field >
+        <input class="input-height-form" matInput formControlName="nombreUsuario" [errorStateMatcher]="errorMatcher"
+        (keypress)="apiValidator.keyPress($event, ['text']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('nombreUsuario').touched && apiForm.getField('nombreUsuario').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('nombreUsuario').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <label class="filter-label">E-mail</label>
+      <mat-form-field>
+        <input type="email" matInput class="input-height-form" formControlName="email" [errorStateMatcher]="errorMatcher"
+          (keypress)="apiValidator.keyPress($event, ['email']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('email').touched && apiForm.getField('email').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('email').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === false">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Guardar</button>
+    </div>
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === true">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Actualizar</button>
+    </div>
+  </div>
+</form>

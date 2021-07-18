@@ -1,0 +1,80 @@
+.btn-actions {
+  height: 26px;
+  width: 26px;
+  color: #ffffff;
+  background: #624792;
+  box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  margin-top: 2px;
+}
+
+.btn-action-delete {
+  color: #624792;
+  font-size: 36px;
+}
+
+.btn-actions-confirm {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 17px;
+  letter-spacing: 0.0025em;
+  text-align: center;
+  color: #523078;
+  cursor: pointer;
+}
+
+.color-icon {
+  color: #523078;
+}
+
+.btn-option {
+  background-color: #f6f6f6;
+}
+.btn-option > span {
+  color: #dbdbdb;
+}
+
+.btn-option-selected > span {
+  color: #624792;
+}
+
+.colour-path {
+  color: #624792 !important;
+}
+
+.btn-register {
+  background: #624792;
+  box-shadow: 0px 0px 8px rgba(26, 41, 182, 0.15);
+  border-radius: 10px;
+  font-family: Poppins, Verdana, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15.6222px;
+  line-height: 27px;
+  letter-spacing: 0.732292px;
+  color: #f6f6f6;
+  height: 60px;
+  width: 100%;
+}
+
+.btn-right {
+  text-align: right;
+}
+
+.btn-back {
+  background: #6e6767;
+  box-shadow: 0px 0px 8px rgba(26, 41, 182, 0.15) !important;
+  border-radius: 10px !important;
+  font-family: Poppins, Verdana, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15.6222px;
+  line-height: 27px;
+  letter-spacing: 0.732292px;
+  color: #f6f6f6;
+  height: 60px;
+  width: 235px;
+  margin-top: 15px !important;
+}

@@ -1,0 +1,349 @@
+
+/* You can add global styles to this file, and also import other style files */
+/* @import "~@angular/material/prebuilt-themes/indigo-pink.css"; */
+
+/* importamos el sistema de grillas*/
+@import "grid-system.css";
+
+@import "../src/app/shared/css/button.css";
+@import "../src/app/shared/css/snackbar.css";
+@import "../src/app/shared/css/badge.css";
+@import "../src/app/shared/css/label.css";
+@import "../src/app/shared/css/logout.css";
+@import "../src/app/shared/css/margin.css";
+@import "../src/app/shared/css/header.css";
+@import "../src/app/shared/css/input.css";
+@import "../src/app/shared/css/select.css";
+@import "../src/app/shared/css/padding.css";
+@import "../src/app/shared/css/radio-button.css";
+@import "../src/app/shared/css/table.css";
+@import "../src/app/shared/css/tabs.css";
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+/* div.container{
+    margin: 0px 40px;
+} */
+
+div.container-app {
+  margin: 10px;
+  width: 80%;
+  margin-left: 180px;
+}
+
+div.container-toolbar {
+  width: 80%;
+  margin-left: 180px;
+  background-color: red;
+}
+
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+       Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+form.normal-form {
+  margin: 10px;
+}
+
+.controles-container {
+  width: 100%;
+  padding: 5%;
+}
+
+.controles-container > * {
+  width: 100%;
+}
+
+.add-bottom-padding {
+  padding-bottom: 10px;
+}
+/* radio group */
+mat-radio-group mat-radio-button {
+  margin-left: 5px;
+}
+
+.button-row button {
+  margin: 5px;
+  position: absolute;
+  top: 90%;
+  width: 100%;
+}
+
+/* notification */
+/* snack-bar-container.success {
+  background-color: #5cb85c;
+  color: #fff;
+}
+
+snack-bar-container.warn {
+  background-color: #f99157;
+  color: #fff;
+}
+
+snack-bar-container.notification simple-snack-bar {
+  font-size: 18px !important;
+  font-weight: bold;
+} */
+
+.hide {
+  display: none;
+}
+
+/* mat-table */
+mat-footer-row mat-footer-cell {
+  justify-content: center;
+  font-style: italic;
+}
+
+mat-form-field {
+  height: 40px;
+  margin-right: 12px;
+}
+
+/* filter controls */
+.search-div {
+  margin: 10px;
+}
+.search-form-field {
+  width: 60%;
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+}
+.search-form-field div.mat-form-field-underline {
+  display: none;
+}
+.search-form-field div.mat-form-field-infix {
+  border-top: 0px;
+}
+.search-form-field div.mat-form-field-wrapper {
+  padding-bottom: 0px;
+}
+.search-form-field div.mat-form-field-suffix button {
+  height: 32px;
+  width: 32px;
+}
+
+/* for dialog pop-up */
+.btn-dialog-close {
+  width: 45px;
+  min-width: 0px !important;
+  height: 40px;
+  padding: 0px !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Dialog */
+.custom-modalbox > mat-dialog-container {
+  border-radius: 25px;
+}
+
+.input-height {
+  height: 30px;
+}
+
+.input-height- {
+  height: 30px;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+/* mat-selection-list {
+  border: 2px solid #523078 !important;
+} */
+
+.mat-pseudo-checkbox-checked, .mat-pseudo-checkbox-indeterminate {
+  background:  #523078 !important;
+}
+
+/* .mat-list-base .mat-list-item .mat-list-item-content-reverse,
+.mat-list-base .mat-list-option  .mat-list-item-content-reverse{
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  border: solid 2px #523078 !important;
+} */
+
+/* .mat-list-base .mat-list-item .mat-list-item-content-reverse,
+.mat-list-base .mat-list-option .mat-list-item-content-reverse {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  border: solid 1px #523078;
+} */
+
+*{
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.mat-radio-button.mat-radio-checked.mat-radio-disabled.mat-accent .mat-radio-inner-circle{
+  background-color:#999 !important;
+}
+
+.mat-radio-button.mat-radio-checked.mat-radio-disabled.mat-accent .mat-radio-outer-circle {
+  border-color:#999 !important;
+}
+
+.w-100{
+  width: 100% !important;
+}
+
+.text-r{
+  text-align: right !important;
+}
+
+.text-c {
+  text-align: center !important;
+}
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-responsive .mat-table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  display: table;
+  border-collapse: collapse;
+  margin: 0px;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.w-100{
+  width: 100% !important;
+}
+
+.text-r{
+  text-align: right !important;
+}
+
+.w-80px{
+  min-width: 80px !important;
+  padding-right: 5px;
+}
+.w-60px{
+  max-width: 60px !important;
+  padding-right: 5px;
+  text-align: center;
+}
+.w-120px{
+  max-width: 120px !important;
+  padding-right: 5px;
+}
+.w-180px{
+  min-width: 180px !important;
+  padding-right: 5px;
+}
+.w-240px{
+  min-width: 240px !important;
+  padding-right: 5px;
+}
+.w-256px{
+  min-width: 256px !important;
+  padding-right: 5px;
+}
+.w-276px{
+  min-width: 276px !important;
+  padding-right: 5px;
+}
+.w-300px{
+  min-width: 300px !important;
+  padding-right: 5px;
+}
+.w-360px{
+  min-width: 360px !important;
+  padding-right: 5px;
+}
+.w-380px{
+  min-width: 380px !important;
+  padding-right: 5px;
+}
+.w-456px{
+  min-width: 456px !important;
+  padding-right: 5px;
+}
+.w-476px{
+  min-width: 476px !important;
+  padding-right: 5px;
+}
+.w-480px{
+  min-width: 480px !important;
+  padding-right: 5px;
+}
+.w-100px{
+  min-width: 100px !important;
+  padding-right: 5px;
+}
+
+.w-120px{
+  min-width: 120px !important;
+  padding-right: 5px;
+}
+.w-140px{
+  min-width: 140px !important;
+  padding-right: 5px;
+}
+.w-160px{
+  min-width: 160px !important;
+  padding-right: 5px;
+}
+.w-180px{
+  min-width: 180px !important;
+  padding-right: 5px;
+}
+.w-200px{
+  min-width: 200px !important;
+  padding-right: 5px;
+}
+.w-220px{
+  min-width: 220px !important;
+  padding-right: 5px;
+}
+.w-240px{
+  min-width: 240px !important;
+  padding-right: 5px;
+}
+.w-260px{
+  min-width: 260px !important;
+  padding-right: 5px;
+}
+.w-280px{
+  min-width: 280px !important;
+  padding-right: 5px;
+}
+.w-320px{
+  min-width: 320px !important;
+  padding-right: 5px;
+}
+.w-340px{
+  min-width: 340px !important;
+  padding-right: 5px;
+}
+.w-360px{
+  min-width: 360px !important;
+  padding-right: 5px;
+}
+

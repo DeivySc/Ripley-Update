@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title" *ngIf="data.isEdit === false">Nuevo Tipo de Cliente</label>
+    <label class="title" *ngIf="data.isEdit === true">Editar Tipo de Cliente</label>
+  </div>
+</div>
+
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <label class="filter-label">Código</label>
+      <br>
+      <mat-form-field>
+        <input matInput formControlName="codigo" class="input-height-form"
+         />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12 mt-20">
+      <label class="filter-label">Descripción</label>
+      <br>
+      <mat-form-field>
+        <input matInput class="input-height-form" formControlName="descripcion" 
+        (keypress)="apiValidator.keyPress($event, ['text']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('descripcion').touched && apiForm.getField('descripcion').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('descripcion').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === false">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Guardar</button>
+    </div>
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === true">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Actualizar</button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,23 @@
+.lbl-confirm {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 26px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0025em;
+  color: #626262;
+}
+
+.btn-actions {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 17px;
+  letter-spacing: 0.0025em;
+  text-align: center;
+  color: #523078;
+  cursor: pointer;
+}

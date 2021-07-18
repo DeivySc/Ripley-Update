@@ -1,0 +1,43 @@
+<div class="limiter" style="" *ngIf="!isLoggedIn">
+  <div class="container-login100">
+
+    <div class="row">
+      <form *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="col s12 m6 offset-m4">
+          <span class="span-sistema">Sistema</span>
+          <span class="span-ripley-puntos">RipleyPuntos</span>
+        </div>
+
+        <div class="col s12 m6 offset-m4" style="padding-top: 31px; padding-bottom: 9px;">
+          <input type="text" class="wrap-input100" name="usuario" [(ngModel)]="form.username" required
+            #username="ngModel" placeholder="Usuario" />
+        </div>
+
+        <div class="col s12 m6 offset-m4" style="padding-top: 13px; padding-bottom: 9px;">
+
+          <input type="password" class="wrap-input100" name="contraseña" [(ngModel)]="form.password" required
+             #password="ngModel" placeholder="Contraseña" />
+        </div>
+
+        <div class="col s12 m6 offset-m4" style="margin-top: 13px;">
+          <div class="container-login100-form-btn">
+            <button mat-raised-button class="btn-form-login">Ingresar al Sistema</button>
+          </div>
+
+        </div>
+
+        <div class="col s12 m3 offset-m4" style="margin-top: 40px; width: 447px;">
+          <p class="href-help">¿Necesitas ayuda para Ingresar?</p>
+        </div>
+
+      </form>
+
+
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="isLoggedIn">
+    <app-menu-inicio></app-menu-inicio>
+</div>

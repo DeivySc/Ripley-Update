@@ -1,0 +1,114 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title" *ngIf="data.isEdit === false">Nuevo Plazo</label>
+    <label class="title" *ngIf="data.isEdit === true">Editar Plazo</label>
+  </div>
+</div>
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s12 m6 l6">
+      <div class="row">
+        <div class="col s12 m12 l12">
+          <label class="filter-label">Tipo de Plazo</label>
+          <ng-container *ngIf="list == null">
+            <p>
+              <strong><label>Cargando...</label></strong>
+            </p>
+          </ng-container>
+          <ng-container *ngIf="list != null">
+            <mat-form-field class="select-height-form">
+              <mat-select style="height: 30px;" formControlName="tipo" [errorStateMatcher]="errorMatcher" (selectionChange)="onChangeSelected($event)">
+                <mat-option *ngFor="let item of list" [value]="item.codigo">
+                  {{item.descripcion}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-error *ngIf="apiForm.getField('tipo').touched && apiForm.getField('tipo').errors?.required">
+              Este campo es requerido
+            </mat-error>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m6 l6" *ngIf="(list != null && apiForm.getField('tipo').value != list[0]?.codigo)">
+      <div class="row" *ngIf="(list != null && apiForm.getField('tipo').value == list[1]?.codigo)">
+        <div class="col s6 m6 l6">
+          <div class="row">
+            <div class="col s12 m12 l12">
+              <label class="filter-label">Desde</label>
+              <mat-form-field appearance="fill">
+                <input formControlName="plazoMinimo" id="plazoMinimo" matInput          
+                  placeholder="Meses" maxlength="3"
+                  (keypress)="apiValidator.keyPress($event, ['number']);" />
+              </mat-form-field>
+              <mat-error *ngIf="apiForm.getField('plazoMinimo').touched && apiForm.getField('plazoMinimo').errors?.required">Este campo es
+                obligatorio.
+              </mat-error>
+              <mat-error *ngIf="apiForm.getField('plazoMinimo').errors?.pattern">
+                {{apiValidator.patternMessage(['number'], 3)}}
+              </mat-error>
+            </div>
+          </div>
+        </div>
+        <div class="col s6 m6 l6">
+          <div class="row">
+            <div class="col s12 m12 l12">
+              <label class="filter-label">Hasta</label>
+              <mat-form-field appearance="fill">
+                <input formControlName="plazoMaximo" id="plazoMaximo" matInput          
+                  placeholder="Meses" maxlength="3"
+                  (keypress)="apiValidator.keyPress($event, ['number']);" />
+              </mat-form-field>
+              <mat-error *ngIf="apiForm.getField('plazoMaximo').touched && apiForm.getField('plazoMaximo').errors?.required">Este campo es
+                obligatorio.
+              </mat-error>
+              <mat-error *ngIf="apiForm.getField('plazoMaximo').errors?.pattern">
+                {{apiValidator.patternMessage(['number'], 3)}}
+              </mat-error>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="(list != null && apiForm.getField('tipo').value == list[2]?.codigo)">
+        <div class="col s6 m6 l6">
+          <div class="row">
+            <div class="col s12 m12 l12">
+              <label class="filter-label">Meses</label>
+              <mat-form-field appearance="fill">
+                <input formControlName="plazoTotal" id="plazoTotal" matInput          
+                  placeholder="Meses" maxlength="3"
+                  (keypress)="apiValidator.keyPress($event, ['number']);" />
+              </mat-form-field>
+              <mat-error *ngIf="apiForm.getField('plazoTotal').touched && apiForm.getField('plazoTotal').errors?.required">Este campo es
+                obligatorio.
+              </mat-error>
+              <mat-error *ngIf="apiForm.getField('plazoTotal').errors?.pattern">
+                {{apiValidator.patternMessage(['number'], 3)}}
+              </mat-error>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col s6 m6 l4 offset-m6 offset-l8" *ngIf="data.isEdit === false">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Guardar</button>
+    </div>
+    <div class="col s6 m6 l4 offset-m6 offset-l8" *ngIf="data.isEdit === true">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Actualizar</button>
+    </div>
+  </div>
+</form>

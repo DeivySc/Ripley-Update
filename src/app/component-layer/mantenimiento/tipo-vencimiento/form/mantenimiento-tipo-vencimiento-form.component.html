@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title" *ngIf="data.isEdit === false">Nuevo Tipo de Vencimiento</label>
+    <label class="title" *ngIf="data.isEdit === true">Editar Tipo de Vencimiento</label>
+  </div>
+</div>
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <label class="filter-label">Tipo de Cliente</label>
+      <mat-form-field appearance="fill">
+        <mat-select formControlName="tipoCliente" placeholder="Tipo de Cliente"
+          [errorStateMatcher]="errorMatcher">
+          <mat-option *ngFor="let tipo of tiposCliente" [value]="tipo.codigo">
+            {{tipo.descripcion}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('tipoCliente').touched && apiForm.getField('tipoCliente').errors?.required">
+        Este campo es requerido
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <label class="filter-label">Tipo de Vencimiento</label>
+      <mat-form-field appearance="fill">
+        <mat-select formControlName="tipoVencimiento"
+          [errorStateMatcher]="errorMatcher" placeholder="Tipo de Vencimiento">
+          <mat-option *ngFor="let tipo of tiposVencimiento" [value]="tipo.codigo">
+            {{tipo.descripcion}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('tipoVencimiento').touched && apiForm.getField('tipoVencimiento').errors?.required">
+        Este campo es requerido
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s6 m6 l6">
+      <label class="filter-label">Tipo de Vigencia</label>
+      <mat-form-field appearance="fill">
+        <input formControlName="mesesInactividad" matInput placeholder="Tipo de Vigencia"
+          [errorStateMatcher]="errorMatcher"
+          (keypress)="apiValidator.keyPress($event, ['number']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('mesesInactividad').touched && apiForm.getField('mesesInactividad').errors?.required">
+        Este campo es requerido
+      </mat-error>  
+      <mat-error *ngIf="apiForm.getField('mesesInactividad').errors?.min || apiForm.getField('mesesInactividad').errors?.max">
+        Este campo debe ser mayor o igual a 1 y menor o igual a 99
+      </mat-error>    
+      <mat-error *ngIf="apiForm.getField('mesesInactividad').errors?.pattern">
+        {{apiValidator.patternMessage(['number'])}}
+      </mat-error>
+    </div>
+    <div class="col s6 m6 l6">
+      <label class="filter-label">Modo de Vigencia</label>
+      <mat-form-field appearance="fill">
+        <mat-select formControlName="modoVigencia" placeholder="Modo de Vigencia"
+          [errorStateMatcher]="errorMatcher">
+          <mat-option *ngFor="let item of modosVigencia" [value]="item.descripcion">
+            {{item.comentario}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('modoVigencia').touched && apiForm.getField('modoVigencia').errors?.required">
+        Este campo es requerido
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === false">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Guardar</button>
+    </div>
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === true">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Actualizar</button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,16 @@
+.success-snackbar {
+  color: #fff;
+  background: #3cc13b;
+}
+.warning-snackbar {
+  color: #212529;
+  background: #ffc107;
+}
+.danger-snackbar {
+  color: #fff;
+  background: #dc3545;
+}
+.info-snackbar {
+  color: #fff;
+  background-color: #17a2b8;
+}

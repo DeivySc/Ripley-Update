@@ -1,0 +1,209 @@
+<div class="container mt-60">
+
+  <div class="row">
+    <div class="col s9 m9 l9">
+      <form [formGroup]="apiForm.formGroup" novalidate>
+
+        <div class="row">
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Fecha Inicio</label><br>
+            <mat-form-field appearance="fill">
+              <input formControlName="fechaInicio" [errorStateMatcher]="errorMatcher"
+                readonly
+                [min]="minDateStart" [max]="maxDate" (dateChange)="getChange($event)"
+                matInput [matDatepicker]="picker1" placeholder="Inicio de Vigencia">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1 startView="month"></mat-datepicker>
+            </mat-form-field>
+            <mat-error *ngIf="apiForm.getField('fechaInicio').touched && apiForm.getField('fechaInicio').errors?.required">
+              Este campo es requerido
+            </mat-error>
+          </div>
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Fecha Fin</label>
+            <mat-form-field appearance="fill">
+              <input formControlName="fechaFin" matInput [matDatepicker]="picker2"
+                readonly
+                [min]="minDateEnd" [max]="maxDate" 
+                [errorStateMatcher]="errorMatcher" placeholder="Fin de Vigencia">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+            <mat-error *ngIf="apiForm.getField('fechaFin').touched && apiForm.getField('fechaFin').errors?.required">
+              Este campo es requerido
+            </mat-error>
+          </div>
+          <div class="col s12 m4 l4">
+            <label class="filter-label">Tipo de Reporte</label><br/>
+            <mat-radio-group aria-label="Select an option" formControlName="tipoReporte"><br>
+              <mat-radio-button [checked]=true value="H">Detalle</mat-radio-button>
+              <mat-radio-button value="A">Acumulado</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s4 m4 l4 mt-20">
+            <label class="filter-label">Establecimiento de Canje</label><br>
+            <ng-container *ngIf="establecimientoCanjeList == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="establecimientoCanjeList != null">
+              <mat-form-field class="select-height-form w-100">
+                <mat-select style="height: 30px;" formControlName="filtroEstablecimientoCanje"
+                  [errorStateMatcher]="errorMatcher">
+                  <mat-option value="">TODAS</mat-option>
+                  <mat-option *ngFor="let item of establecimientoCanjeList" [value]="item.id">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('filtroEstablecimientoCanje').touched && apiForm.getField('filtroEstablecimientoCanje').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>  
+          <div class="col s4 m4 l4 mt-20">
+            <label class="filter-label">Sucursal de Emisión</label><br>
+            <ng-container *ngIf="sucursalEmisionList == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="sucursalEmisionList != null">
+              <mat-form-field class="select-height-form w-100">
+                <mat-select style="height: 30px;" formControlName="filtroSucursalEmision"
+                  [errorStateMatcher]="errorMatcher">
+                  <mat-option value="">TODAS</mat-option>
+                  <mat-option *ngFor="let item of sucursalEmisionList" [value]="item.id">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('filtroSucursalEmision').touched && apiForm.getField('filtroSucursalEmision').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+          <div class="col s4 m4 l4 mt-20">
+            <label class="filter-label">Promotor</label><br>
+            <ng-container *ngIf="promotoraList == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="promotoraList != null">
+              <mat-form-field class="select-height-form w-100">
+                <mat-select style="height: 30px;" formControlName="filtroPromotora"
+                  [errorStateMatcher]="errorMatcher">
+                  <mat-option value="">TODOS</mat-option>
+                  <mat-option *ngFor="let item of promotoraList" [value]="item.id">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('filtroPromotora').touched && apiForm.getField('filtroPromotora').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <div class="col s6 m3 l3">
+      <button mat-raised-button class="btn-register" (click)="search()" [disabled]="apiForm.formGroup.invalid">
+        <span class="material-icons">
+          search
+        </span>
+        Ver Reporte
+      </button>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col s12 m6 lg6">
+      <button mat-raised-button class="button-copiar" (click)="copiar()" [disabled]="!(list?.length > 0)">
+        <span class="material-icons">
+          file_download
+        </span>
+        Exportar Excel
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-20">
+    <div class="col s12 m12 l12">
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="list?.source" (matSortChange)="list.onSortChange($event)">
+          
+          <ng-container matColumnDef="Fecha">
+            <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.fechaEmision}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Cliente">
+            <mat-header-cell *matHeaderCellDef>Cliente</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.nombresCliente}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Documento">
+            <mat-header-cell *matHeaderCellDef>Documento</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{(element.tipoDocumento != "" && element.tipoDocumento != null ? element.tipoDocumento + "-" + element.identificacionCliente : element.identificacionCliente)}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Sucursal de Emisión">
+            <mat-header-cell *matHeaderCellDef>Sucursal de Emisión</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.descripcionSucursal}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Establecimientos de Canje">
+            <mat-header-cell *matHeaderCellDef>Establecimientos de Canje</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.descripcionValorado}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Producto">
+            <mat-header-cell *matHeaderCellDef>Producto</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.descripcionProducto}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Puntos S/">
+            <mat-header-cell *matHeaderCellDef>Puntos S/</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.ptosSoles}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Promotor">
+            <mat-header-cell *matHeaderCellDef>Promotor</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.promotor}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Número Certificado">
+            <mat-header-cell *matHeaderCellDef>Número Certificado</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.codigoCertificado}}</mat-cell>
+          </ng-container>
+
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="list?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: list?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list?.isSearching && ! list?.isError) ? (list?.length > 0) : true)}">
+          </mat-footer-row>
+        </table>
+        <mat-paginator #TablePaginator="matPaginator" [length]="list?.length" [pageSize]="list?.size"
+          [pageSizeOptions]="list?.pageSizeOptions" (page)="list?.onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

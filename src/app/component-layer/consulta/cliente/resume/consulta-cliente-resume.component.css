@@ -1,0 +1,540 @@
+.button-canjes{
+  width:100%;
+  font-size: 16px;
+  bottom: 0%;
+  margin: 0px 0% 5px;
+  height:65px;
+  font-family: Poppins, Verdana, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  letter-spacing: 0.75px;
+  color: #7766AD;
+  border: 2px solid #7766AD;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.button-historico{
+  width:100%;
+  font-size: 16px;
+  bottom: 0%;
+  margin: 0px 0% 5px;
+  height:65px;
+  font-family: Poppins, Verdana, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  letter-spacing: 0.75px;
+  color: #7766AD;
+  border: 2px solid #7766AD;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.button-movimientos{
+  width:100%;
+  font-size: 16px;
+  bottom: 0%;
+  margin: 0px 0% 5px;
+  height:65px;
+  font-family: Poppins, Verdana, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  letter-spacing: 0.75px;
+  color: #7766AD;
+  border: 2px solid #7766AD;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.button-busqueda{
+  width:100%;
+  height:65px;
+  color: #523078;
+  bottom: 0%;
+  font-family: Poppins, Verdana, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  letter-spacing: 0.75px;
+  background: #F6F6F6;
+  box-shadow: 0px 0px 8px rgba(26, 41, 182, 0.15);
+  border-radius: 9.76389px;
+  margin: 10px 0% 0px;
+}
+
+.button-agregar{
+  width:100%;
+  height:65px;
+  bottom: 0%;
+  font-family: Poppins, Verdana, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  letter-spacing: 0.75px;
+  color: #F6F6F6;
+  background: #624792;
+  border: 1px solid #DBDBDB;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin: 10px 0% 0px;
+}
+
+.label-estado{
+  width:100%;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 90px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0125em;
+  color: #000000;
+}
+
+h2{
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 35px;
+  line-height: 43px;
+  color: #000000;
+}
+
+mat-form-field {
+  color: #523078;
+}
+
+mat-datepicker-toggle{
+  color: #523078;
+}
+
+mat-datepicker{
+  color: #523078;
+}
+
+mat-select{
+  color: #523078;
+}
+
+mat-option{
+  color: #523078;
+}
+
+mat-icon{
+  bottom: 20%;
+  color: #FFFFFF;
+}
+
+mat-divider{
+  border: 1px solid #DBDBDB;
+}
+
+mat-step{
+  background: #523078;
+}
+
+ng-template{
+  background: #523078;
+}
+
+.label-numero{
+  width:100%;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0125em;
+  color: #626262;
+}
+
+.label-nombre{
+  width:100%;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0125em;
+  color: #626262;
+}
+
+.label-fecha{
+  width:100%;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0125em;
+  color: #626262;
+}
+
+.label-hora{
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0125em;
+  color: #626262;
+}
+
+span{
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0025em;
+  color: #000000;
+}
+
+.label-registro{
+  width:50%;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0025em;
+
+  color: #000000;
+}
+
+.label-hora2{
+  width:50%;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0025em;
+  color: #000000;
+}
+
+.segmentos-puntos{
+  background-color: #FFE248;
+  border-radius: 5px;
+  width: 100%;
+  height:80px;
+}
+
+.segmentos-puntos-dorado{
+  background-color: gold;
+  border-radius: 5px;
+  width: 100%;
+  height:80px;
+}
+
+.segmentos-puntos-silver{
+  background-color: silver;
+  border-radius: 5px;
+  width: 100%;
+  height:80px;
+}
+
+.segmentos-puntos-morado{
+  background-color: purple;
+  border-radius: 5px;
+  width: 100%;
+  height:80px;
+}
+
+.label-segmento{
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0125em;
+  color: #212121;
+  margin:10px;
+}
+
+.label-segmento2{
+  width:100%;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 30px;
+  color: #523078;
+  margin:10px;
+}
+
+.gold-puntos2{
+  background-color: #F6F6F6;
+  border-radius: 5px;
+  width:100%;
+  height:80px;
+}
+
+.label-puntos{
+  width:100%;
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 16px;
+  color: #626262;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+  margin:10px;
+}
+
+.label-puntos-numero{
+  width:100%;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 30px;
+  color: #523078;
+  margin:10px;
+}
+
+.gold-puntos3{
+  background-color: #C3C6E3;
+  border-radius: 5px;
+  width:100%;
+  height:80px;
+}
+
+.label-segmento3{
+  width:100%;
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: #212121;;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+  margin:10px;
+}
+
+.label-puntos-numero2{
+  width:100%;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 35px;
+  line-height: 30px;
+  color: #523078;
+  margin:10px;
+}
+
+.float-right {
+  float: right;
+}
+
+.height-47 {
+  height: 47px;
+}
+
+.icono-estrella{
+  bottom:81.84%;
+  color: #523078;
+}
+
+.icono-advertencia{
+  bottom: 31.44%;
+  border: 2px solid #FFE7E7;
+  color: #000000;
+  margin:10px;
+}
+
+.label-segmento4{
+  margin-right: 15px;
+  height: 23px;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0125em;
+  color: #523078;
+}
+
+.label-segmento4 > strong
+{
+font-weight: bolder !important;
+}
+
+.label-segmento5{
+  width: 150px;
+  height: 23px;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.0015em;
+  color: #523078;
+}
+
+.label-puntos-numero3{
+  width: 100%;
+  height: 26px;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 26px;
+  text-align: right;
+  letter-spacing: 0.0025em;
+  color: #523078;
+  margin:10px;
+}
+
+.np-0{
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.warning-puntos{
+  width:100%;
+  height:85px;
+  background: #FFE7E7;
+  border-radius: 5px;
+}
+
+.label-puntos{
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.0125em;
+  color: #523078;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 10px;
+}
+
+.label-puntos-total{
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.0025em;
+  color: #523078;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin: 10px;
+}
+
+.label-resultado{
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  display: contents;
+  align-items: right;
+  letter-spacing: 0.0125em;
+  color: #626262;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 0px;
+}
+
+.label-resultado-total{
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 26px;
+  display: contents;
+  align-items: center;
+  letter-spacing: 0.0025em;
+  color: #212121;
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+  margin: 0px 0px;
+}
+
+.tabla-lista{
+  /**width:100%;*/
+  border: 1px solid #dad1d1;
+  box-sizing: border-box;
+  border-radius: 10px #dad1d1;
+  background: #FFFFFF;
+}
+
+mat-tab-group{
+  width:100%;
+}
+
+.segmentos-puntos-morado .label-segmento,
+.segmentos-puntos-morado .label-segmento2,
+.segmentos-puntos-morado .icono-estrella{
+  color:#FFF;
+}
+
+.mat-tab-body-content{
+  overflow:visible !important;
+}
+
+.text-r{
+  text-align: right;
+}

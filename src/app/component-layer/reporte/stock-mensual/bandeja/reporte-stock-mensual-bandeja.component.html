@@ -1,0 +1,293 @@
+<div class="container mt-60">
+
+  <div class="row">
+    <div class="col s9 m9 l9">
+      <form [formGroup]="apiForm.formGroup" novalidate>
+
+        <div class="row">
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Mes</label><br>
+            <mat-form-field class="select-height-form">
+              <mat-select style="height: 30px;"formControlName="mes">
+                <mat-option *ngFor="let periodo of periodos" [value]="periodo.descripcion">
+                  {{periodo.comentario}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="apiForm.getField('mes').touched && apiForm.getField('mes').errors?.required">
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Año</label><br>
+            <mat-form-field>
+              <input matInput class="input-height-form" formControlName="anio">
+            </mat-form-field>
+            <mat-error *ngIf="apiForm.getField('anio').touched && apiForm.getField('anio').errors?.required">
+              Este campo es requerido
+            </mat-error>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col s4 m4 l4 mt-20">
+            <label class="filter-label">Tipo de Sub Producto</label><br>
+            <ng-container *ngIf="sublist == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="sublist != null">
+              <mat-form-field class="select-height-form w-100">
+                <mat-select style="height: 30px;" formControlName="tipoSubProducto"
+                  [errorStateMatcher]="errorMatcher">
+                  <mat-option value="">TODAS</mat-option>
+                  <mat-option *ngFor="let item of sublist" [value]="item.id">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('tipoSubProducto').touched && apiForm.getField('tipoSubProducto').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <div class="col s6 m3 l3">
+      <button mat-raised-button class="btn-register" (click)="search()" [disabled]="apiForm.formGroup.invalid">
+        <span class="material-icons">
+          search
+        </span>
+        Ver Reporte
+      </button>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col s12 m6 lg6">
+      <button mat-raised-button class="button-copiar" (click)="copiar()" [disabled]="!(list?.length > 0)">
+        <span class="material-icons">
+          file_download
+        </span>
+        Exportar Excel
+      </button>
+    </div>
+  </div>
+  
+  <div class="row mt-20">
+    <div class="col s12 m12 l12">
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="list?.source" (matSortChange)="list.onSortChange($event)">
+          <ng-container matColumnDef="Tarjeta">
+            <mat-header-cell *matHeaderCellDef>Tarjeta</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.tarjeta}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Stock Inicial">
+            <mat-header-cell *matHeaderCellDef>Stock Inicial</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.stkInicial}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Puntos por Compras">
+            <mat-header-cell *matHeaderCellDef>Puntos por Compras</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.compras}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Tarjeta Ripley">
+            <mat-header-cell *matHeaderCellDef>Tarjeta Ripley</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.ripley}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Certificado">
+            <mat-header-cell *matHeaderCellDef>Certificado</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.certificado}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Cta Cancelada">
+            <mat-header-cell *matHeaderCellDef>Cta Cancelada</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.cancelada}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Cta Mora">
+            <mat-header-cell *matHeaderCellDef>Cta Mora</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.mora}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Cta sin Compras">
+            <mat-header-cell *matHeaderCellDef>Cta sin Compras</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.sinCompras}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Caducidad">
+            <mat-header-cell *matHeaderCellDef>Caducidad</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.caducidad}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Ajustes">
+            <mat-header-cell *matHeaderCellDef>Ajustes</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.ajustes}}</mat-cell>
+          </ng-container>  
+          <ng-container matColumnDef="Ajustes Negativos">
+            <mat-header-cell *matHeaderCellDef>Ajustes Negativos</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.negativos}}</mat-cell>
+          </ng-container>         
+          <ng-container matColumnDef="Stock Final">
+            <mat-header-cell *matHeaderCellDef>Stock Final</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.stkFinal}}</mat-cell>
+          </ng-container>          
+          
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="list?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: list?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list?.isSearching && ! list?.isError) ? (list?.length > 0) : true)}"> </mat-footer-row>  
+        </table>
+        <mat-paginator #TablePaginator="matPaginator" [length]="list?.length" [pageSize]="list?.size"
+          [pageSizeOptions]="list?.pageSizeOptions" (page)="list?.onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l8 mt-10">
+      <label class="label-detalle">DETALLE DE PUNTOS NO ACUMULADOS POR LIMITE DE LC</label>
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="listDetalle?.source" (matSortChange)="listDetalle.onSortChange($event)">
+          <ng-container matColumnDef="Tarjeta">
+            <mat-header-cell *matHeaderCellDef>Tarjeta</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.descripcion}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Compra Tienda">
+            <mat-header-cell *matHeaderCellDef>Compra Tienda</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.compraTda}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Compra Establecimiento">
+            <mat-header-cell *matHeaderCellDef>Compra <br>Establecimiento</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.compraEafi}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="No Acum. LC">
+            <mat-header-cell *matHeaderCellDef>No Acum. LC</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.noalcre}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Total">
+            <mat-header-cell *matHeaderCellDef>Total</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.totaldet}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="listDetalle?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: listDetalle?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! listDetalle?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! listDetalle?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! listDetalle?.isSearching && ! listDetalle?.isError) ? (listDetalle?.length > 0) : true)}"> </mat-footer-row>  
+        </table>
+      </div>
+    </div>
+
+    <div class="col s12 m12 l4">
+      <label class="label-detalle">VALIDAR PUNTOS DEL MES</label>
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="listValidar?.source" (matSortChange)="listValidar.onSortChange($event)">
+          <ng-container matColumnDef="Concepto">
+            <mat-header-cell *matHeaderCellDef>Concepto</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.tipo}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Puntos del Mes">
+            <mat-header-cell *matHeaderCellDef>Puntos del Mes</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.monto}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="listValidar?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: listValidar?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! listValidar?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! listValidar?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! listValidar?.isSearching && ! listValidar?.isError) ? (listValidar?.length > 0) : true)}"> </mat-footer-row>  
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col s12 m12 l8 mt-10">
+      <label class="label-detalle">LEYENDA</label>
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="listLeyenda?.source" (matSortChange)="listLeyenda.onSortChange($event)">
+          <ng-container matColumnDef="Producto">
+            <mat-header-cell *matHeaderCellDef>Producto</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.descripcion}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Unidad">
+            <mat-header-cell *matHeaderCellDef>Unidad</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.descripcionPuntaje}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="listLeyenda?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: listLeyenda?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! listLeyenda?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! listLeyenda?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! listLeyenda?.isSearching && ! listLeyenda?.isError) ? (listLeyenda?.length > 0) : true)}"> </mat-footer-row>  
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,110 @@
+<!-- background: #E5E5E5; -->
+<div class="limiter" style="" *ngIf="!isLoggedIn">
+  <!-- style="padding: 62px 110px 110px 33px ;" -->
+  <div class="container-login100">
+
+    <div class="row">
+      <form *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="col s12 m6 offset-m4">
+          <span class="span-sistema">Sistema</span>
+          <span class="span-ripley-puntos">RipleyPuntos</span>
+        </div>
+
+        <div class="col s12 m6 offset-m4" style="padding-top: 31px; padding-bottom: 9px;">
+          <input type="text" class="wrap-input100" name="usuario" [(ngModel)]="form.username" required
+            #username="ngModel" placeholder="Usuario" />
+          <!-- <div class="alert-usuario" role="alert" *ngIf="f.submitted && username.invalid">
+            ¡Se requiere nombre de usuario!
+          </div> -->
+        </div>
+
+        <div class="col s12 m6 offset-m4" style="padding-top: 13px; padding-bottom: 9px;">
+
+          <input type="password" class="wrap-input100" name="contraseña" [(ngModel)]="form.password" required
+             #password="ngModel" placeholder="Contraseña" />
+             <!-- minlength="6" -->
+          <!-- <div class="alert-password" role="alert" *ngIf="f.submitted && password.invalid">
+            <div *ngIf="password.errors.required">
+              Contraseña es requerida</div>
+            <div *ngIf="password.errors.minlength">
+              La contraseña debe tener al menos 6 caracteres
+            </div>
+          </div> -->
+        </div>
+
+        <div class="col s12 m6 offset-m4" style="margin-top: 13px;">
+          <div class="container-login100-form-btn">
+            <button mat-raised-button class="btn-form-login">Ingresar al Sistema</button>
+          </div>
+
+        </div>
+
+        <div class="col s12 m3 offset-m4" style="margin-top: 40px; width: 447px;">
+          <p class="href-help">¿Necesitas ayuda para Ingresar?</p>
+        </div>
+
+      </form>
+
+
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="isLoggedIn">
+  <!-- <div class=""> -->
+    <app-menu-inicio></app-menu-inicio>
+  <!-- </div> -->
+</div>
+
+
+
+
+<!-- <html>
+<head>
+  <title></title>
+</head>
+<body>
+
+
+<div class="col-md-12">
+  <div class="card card-container">
+    <form *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+      <h1>Sistema</h1>
+      <h2>RipleyPuntos</h2>
+      <img class="login-vector" src="login-vector.jpg" alt="login-vector">
+      <div class="form-group">
+        <input type="text" class="input-usuario" name="usuario" [(ngModel)]="form.username" required #username="ngModel" placeholder="Usuario"/>
+        <div class="alert-usuario" role="alert" *ngIf="f.submitted && username.invalid">
+            ¡Se requiere nombre de usuario!
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="password" class="input-contraseña" name="contraseña" [(ngModel)]="form.password" required minlength="6" #password="ngModel" placeholder="Contraseña"/>
+        <div class="alert-password" role="alert" *ngIf="f.submitted && password.invalid">
+          <div *ngIf="password.errors.required">Contraseña es requerida</div>
+          <div *ngIf="password.errors.minlength">
+            La contraseña debe tener al menos 6 caracteres
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button mat-raised-button class="button-login">Ingresar al Sistema</button>
+      </div>
+        <a class="link-ayuda" href="url">¿Necesitas ayuda para Ingresar?</a>
+      <div class="form-group">
+        <div class="alert-session" role="alert" *ngIf="f.submitted && isLoginFailed">
+          La Sesion de Usuario ha fallado: {{errorMessage}}
+        </div>
+      </div>
+    </form>
+
+    <div class="alert alert-success" *ngIf="isLoggedIn">
+      <app-menu-inicio></app-menu-inicio>
+    </div>
+  </div>
+</div>
+
+</body>
+</html> -->

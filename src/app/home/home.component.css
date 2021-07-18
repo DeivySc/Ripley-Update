@@ -1,0 +1,15 @@
+.padre {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+}
+
+.hijo {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 49px;
+  line-height: 60px;
+  color: #523078;
+}

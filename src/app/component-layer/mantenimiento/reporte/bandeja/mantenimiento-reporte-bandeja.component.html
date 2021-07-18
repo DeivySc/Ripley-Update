@@ -1,0 +1,310 @@
+<div class="container mt-60">
+
+  <div class="row">
+    <div class="col s6 m3 l3 offset-m9 offset-l9">
+      <button mat-raised-button class="btn-register" (click)="new()">
+        <span class="material-icons">
+          add_box
+        </span>
+        Nuevo Reporte
+      </button>
+    </div>
+  </div>
+  
+  <div class="row mt-20">
+    <div class="col s12 m12 l12">
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="list?.source" (matSortChange)="list.onSortChange($event)">
+
+          <ng-container matColumnDef="codigo">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-120px'" mat-sort-header>Código</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-120px'">{{element.codigo}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="descripcion">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-360px'">Descripción</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-360px'">{{element.descripcion}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="detalle">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="w-100 text-r">
+                Detalle
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="w-100 text-r">
+                <button mat-icon-button (click)="viewColumna(row)" ng-click="showDetail=!showDetail">
+                  <span class="material-icons color-icon">
+                    remove_red_eye
+                  </span>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="editar">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="w-100 text-r">
+                Editar
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="w-100 text-r">
+                <button mat-icon-button (click)="edit(row)">
+                  <span class="material-icons btn-actions">
+                    edit
+                  </span>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="eliminar">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="w-100 text-r">
+                Eliminar
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="w-100 text-r">
+                <button mat-icon-button color="warn" (click)="delete(row)">
+                  <span class="material-icons btn-action-delete">
+                    delete
+                  </span>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="list?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: list?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list?.isSearching && ! list?.isError) ? (list?.length > 0) : true)}">
+          </mat-footer-row>
+        </table>
+        <mat-paginator #TablePaginator="matPaginator" [length]="list?.length" [pageSize]="list?.size"
+          [pageSizeOptions]="list?.pageSizeOptions" (page)="list?.onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="showDetail">
+    <div class="col s6 m3 l3 offset-m9 offset-l9">
+      <button mat-raised-button class="btn-register" (click)="newColumna()">
+        <span class="material-icons">
+          add_box
+        </span>
+        Nueva Columna
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-20" *ngIf="showDetail">
+    <div class="col s12 m12 l12">
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="listDet2?.source" (matSortChange)="listDet2.onSortChange($event)">
+
+          <ng-container matColumnDef="codigo">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-160px'">Código Reporte</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-160px'">{{element.codigoReporte}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="codigoColumna">
+            <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-160px'">Código Columna</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-160px'">{{element.codigoColumna}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="descripcion">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-240px'">Descripción Columna</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-240px'">{{element.descripcionReporteColumna}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="verDetalle">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="w-100 text-r">
+                Detalle
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="w-100 text-r">
+                <button mat-icon-button (click)="viewDetalle(row)">
+                  <span class="material-icons color-icon">
+                    remove_red_eye
+                  </span>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="editar">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="w-100 text-r">
+                Editar
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="w-100 text-r">
+                <button mat-icon-button (click)="editColumna(row)">
+                  <span class="material-icons btn-actions">
+                    edit
+                  </span>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="eliminar">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="w-100 text-r">
+                Eliminar
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="w-100 text-r">
+                <button mat-icon-button color="warn" (click)="deleteColumna(row)">
+                  <span class="material-icons btn-action-delete">
+                    delete
+                  </span>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="listDet2?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: listDet2?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! listDet2?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! listDet2?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! listDet2?.isSearching && ! listDet2?.isError) ? (listDet2?.length > 0) : true)}">
+          </mat-footer-row>
+
+        </table>
+        <mat-paginator #TablePaginator="matPaginator" [length]="listDet2?.length" [pageSize]="listDet2?.size"
+          [pageSizeOptions]="listDet2?.pageSizeOptions" (page)="listDet2?.onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="showSubDetail">
+    <div class="col s6 m3 l3 offset-m9 offset-l9">
+      <button mat-raised-button class="btn-register" (click)="newDetalle()">
+        <span class="material-icons">
+          add_box
+        </span>
+        Nuevo Detalle
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-20" *ngIf="showSubDetail">
+    <div class="col s12 m12 l12">
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="listDet3?.source" (matSortChange)="listDet3.onSortChange($event)">
+
+          <ng-container matColumnDef="codigo">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-160px'">Código Reporte</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-160px'">{{element.codigoReporte}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="codigoColumna">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-160px'">Código Columna</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-160px'">{{element.codigoColumna}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="codigoMovimiento">
+            <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-160px'">Código Movimiento</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-160px'">{{element.codigoMovimiento}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="descripcion">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-360px'">Descripción Movimiento</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-360px'">{{element.descripcionMovimiento}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="tipoMovimiento">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-160px'">Tipo de Movimiento</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-160px'">{{element.descripcionTipoMovimiento}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="eliminar">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="w-100 text-r">
+                Eliminar
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="w-100 text-r">
+                <button mat-icon-button color="warn" (click)="deleteDetalle(row)">
+                  <span class="material-icons btn-action-delete">
+                    delete
+                  </span>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="listDet3?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: listDet3?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! listDet3?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! listDet3?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! listDet3?.isSearching && ! listDet3?.isError) ? (listDet3?.length > 0) : true)}">
+          </mat-footer-row>
+
+        </table>
+        <mat-paginator #TablePaginator="matPaginator" [length]="listDet3?.length" [pageSize]="listDet3?.size"
+          [pageSizeOptions]="listDet3?.pageSizeOptions" (page)="listDet3?.onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+
+
+</div>

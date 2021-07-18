@@ -1,0 +1,38 @@
+.span-block {
+  text-align: center;
+}
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+}
+
+.badge-active {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #3cc13b;
+  background-color: #fff;
+  border: 1px solid #3cc13b;
+  font-size: 13px;
+}
+
+.badge-inactive {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #ff0000;
+  background-color: #fff;
+  border: 1px solid #ff0000;
+  font-size: 13px;
+}

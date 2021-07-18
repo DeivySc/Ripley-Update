@@ -1,0 +1,117 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title" *ngIf="data.isEdit === false">Nuevo Parámetro</label>
+    <label class="title" *ngIf="data.isEdit === true">Editar Parámetro</label>
+  </div>
+</div>
+
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s12 m12 12">
+      <label class="filter-label">Grupo</label>
+      <ng-container *ngIf="groups == null">
+        <p>
+          <strong><label>Cargando...</label></strong>
+        </p>
+      </ng-container>
+      <ng-container *ngIf="groups != null">
+        <mat-form-field class="select-height-form">
+          <mat-select style="height: 30px;" formControlName="padre" [errorStateMatcher]="errorMatcher">
+            <mat-option *ngFor="let group of groups" [value]="group.codigo">
+              {{group.descripcion}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-error *ngIf="apiForm.getField('padre').touched && apiForm.getField('padre').errors?.required">
+          Este campo es requerido
+        </mat-error>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <label class="filter-label">Código</label>
+      <br>
+      <mat-form-field>
+        <input matInput formControlName="codigo" class="input-height-form"
+            (keypress)="apiValidator.keyPress($event, ['number']);"
+            [readonly]="(data.isEdit)"
+         />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('codigo').touched && apiForm.getField('codigo').errors?.required">
+        Este campo es requerido
+      </mat-error>    
+      <mat-error *ngIf="apiForm.getField('codigo').errors?.pattern">
+        {{apiValidator.patternMessage(['number'])}}
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12 mt-20">
+      <label class="filter-label">Descripción</label>
+      <br>
+      <mat-form-field>
+        <input matInput class="input-height-form" formControlName="descripcion" 
+        (keypress)="apiValidator.keyPress($event, ['text']);"/>
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('descripcion').touched && apiForm.getField('descripcion').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('descripcion').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <label class="filter-label">Tipo de Movimiento</label>
+      <mat-radio-group formControlName="tipoMovimiento"><br>
+        <mat-radio-button value="A">Acumulado</mat-radio-button>
+        <mat-radio-button value="C">Canje</mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="apiForm.getField('tipoMovimiento').touched && apiForm.getField('tipoMovimiento').errors?.required">
+        Este campo es requerido
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12 mt-20">
+      <label class="filter-label">Comentario</label>
+      <br>
+      <mat-form-field>
+        <textarea matInput class="input-height-form" formControlName="comentario" rows="5"
+        (keypress)="apiValidator.keyPress($event, ['alphanumeric']);"></textarea>
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('comentario').touched && apiForm.getField('comentario').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('comentario').errors?.pattern">
+        {{apiValidator.patternMessage(['alphanumeric'])}}
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === false">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Guardar</button>
+    </div>
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit === true">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Actualizar</button>
+    </div>
+  </div>
+</form>

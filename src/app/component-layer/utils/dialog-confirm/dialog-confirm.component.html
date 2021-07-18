@@ -1,0 +1,18 @@
+<div mat-dialog-content>
+  <div style="text-align: center;" *ngIf="! this.data?.isError">
+    <p>{{text}} <strong style="color:#F00;font-weight: bolder;">{{emphasis}}</strong></p>
+  </div>
+  <div style="text-align: center; font-size: 10px;" *ngIf="this.data?.isError">
+    <p>{{text}}</p>
+  </div>
+</div>
+<div mat-dialog-actions *ngIf="! this.data?.isLoading && ! this.data?.isError">
+  <div class="row">
+    <div class="col s6 m6 l6 btn-actions-confirm" (click)="cancel()">
+      Cancelar
+    </div>
+    <div class="col s6 m6 l6 btn-actions-confirm" (click)="toAccept()">
+      Aceptar
+    </div>
+  </div>
+</div>

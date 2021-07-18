@@ -1,0 +1,12 @@
+.text-title-header {
+  /*margin-left: 18%;*/
+  margin-left: 12%;
+  /* text-align: center; */
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 35px;
+  line-height: 43px;
+  color: #000000;
+  margin-top: 10px;
+}

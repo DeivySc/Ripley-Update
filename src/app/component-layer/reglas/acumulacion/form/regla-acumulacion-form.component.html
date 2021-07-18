@@ -1,0 +1,397 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title" *ngIf="data.isEdit === false">Nueva Regla de Acumulación</label>
+    <label class="title" *ngIf="data.isEdit === true">Editar Regla de Acumulación</label>
+  </div>
+</div>
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s2" *ngIf="data.isEdit == true">
+      <label class="filter-label">Código: </label>
+      <mat-form-field appearance="fill">
+        <input matInput class="input-height-form" value="{{apiForm.model?.id}}" disabled>
+      </mat-form-field>
+    </div>
+  
+    <div class="col s6">
+      <label class="filter-label">Nombre de la regla</label>
+      <mat-form-field appearance="fill">
+        <input
+          formControlName="nombre"
+          matInput
+          (keypress)="apiValidator.keyPress($event, ['text']);"
+          placeholder="Nombre"
+          [errorStateMatcher]="errorMatcher"
+        />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('nombre').touched && apiForm.getField('nombre').errors?.required">
+        Este campo es obligatorio.
+      </mat-error>        
+      <mat-error *ngIf="apiForm.getField('nombre').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+    <div class="col s4">
+      <label class="filter-label">Tipo</label>
+      <mat-radio-group formControlName="tipo" aria-labelledby="example-radio-group-label"><br/>
+        <mat-radio-button value="4001">Exclusiva</mat-radio-button>
+        <mat-radio-button value="4002">Adicional</mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="apiForm.getField('tipo').touched && apiForm.getField('tipo').errors?.required"
+        >Este campo es obligatorio.</mat-error
+      >
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col s4">
+      <label class="filter-label">Inicio de Vigencia</label>
+      <mat-form-field appearance="fill" *ngIf="! data.isEdit">
+        <input
+          formControlName="inicioVigencia"
+          [errorStateMatcher]="errorMatcher"
+          (keypress)="apiValidator.keyPress($event, ['date']);"
+          readonly
+          [min]="minDateStart"
+          matInput            
+          [matDatepicker]="picker1"
+          placeholder="Inicio de Vigencia"
+          (dateChange)="getChange($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1 startView="month"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="fill" *ngIf="data.isEdit">
+        <input
+          formControlName="inicioVigencia"
+          readonly
+          matInput
+          (keypress)="apiValidator.keyPress($event, ['date']);"
+          value="apiForm.model?.inicioVigencia"
+        />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('inicioVigencia').touched && apiForm.getField('inicioVigencia').errors?.required">
+        Este campo es requerido
+      </mat-error> 
+      <mat-error *ngIf="apiForm.getField('inicioVigencia').errors?.pattern">
+        {{apiValidator.patternMessage(['date'])}}
+      </mat-error>
+    </div>
+
+    <div class="col s4">
+      <label class="filter-label">Fin de Vigencia</label>
+      <mat-form-field appearance="fill">
+        <input
+          matInput
+          formControlName="finVigencia"
+          [min]="minDateEnd"
+          [matDatepicker]="picker2"
+          [errorStateMatcher]="errorMatcher"
+          placeholder="Fin de Vigencia"
+          readonly
+          (keypress)="apiValidator.keyPress($event, ['date']);"
+        /> 
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker2"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('finVigencia').touched && apiForm.getField('finVigencia').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('finVigencia').errors?.pattern">
+        {{apiValidator.patternMessage(['date'])}}
+      </mat-error>
+    </div>
+  
+  </div>
+
+  <div class="row">
+    <div class="col s2">
+      <label class="filter-label">Puntaje</label>
+      <mat-form-field appearance="fill">
+        <input
+          formControlName="puntaje"
+          matInput
+          placeholder="Puntaje"
+          [errorStateMatcher]="errorMatcher"
+          (keypress)="apiValidator.keyPress($event, ['number']);"
+        />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('puntaje').touched && apiForm.getField('puntaje').errors?.required">Este campo es obligatorio.</mat-error>
+      <mat-error *ngIf="apiForm.getField('puntaje').errors?.pattern">
+        {{apiValidator.patternMessage(['number'], 4)}}
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('puntaje').errors?.min">Este campo debe ser mayor o igual a 1</mat-error>
+      <mat-error *ngIf="apiForm.getField('puntaje').errors?.max">Este campo debe ser menor o igual a 1000</mat-error>
+    </div>
+    <div class="col s6">
+      <label class="filter-label">Modalidad</label>
+      <mat-radio-group formControlName="tipoPuntaje" (change)="onChangeSelected($event)"><br/>
+        <mat-radio-button value="5001">Independiente del monto de compra</mat-radio-button>
+        <mat-radio-button value="5002">Por el monto de compra</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    
+    <div class="col s4" *ngIf="apiForm.getField('tipoPuntaje').value == '5002'">
+      <label class="filter-label">Monto de Compra S/.</label>
+      <mat-form-field appearance="fill">
+        <input
+          formControlName="unidadCompra"
+          matInput
+          placeholder="Monto por comprar"
+          [errorStateMatcher]="errorMatcher"
+          (keypress)="apiValidator.keyPress($event, ['decimal']);"
+        />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('unidadCompra').touched && apiForm.getField('unidadCompra').errors?.required">Este campo es obligatorio.</mat-error>
+      <mat-error *ngIf="apiForm.getField('unidadCompra').errors?.pattern">
+        {{apiValidator.patternMessage(['decimal'], 5, 2)}}
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('unidadCompra').errors?.min">Este campo debe ser mayor o igual a 1.00</mat-error>
+      <mat-error *ngIf="apiForm.getField('unidadCompra').errors?.max">Este campo debe ser menor o igual a 10,000.00</mat-error>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="row">
+    <div class="col s12 m6 l6">
+      <div class="row">
+        <div class="flexbox">
+          <div class="col buttons" [ngClass]="{'border-bot-morado border-bot': vista == 1}">
+            <button mat-flat-button><mat-icon [ngClass]="{'icon-morado': vista == 1}">filter_5</mat-icon> Tienda</button>
+          </div>
+          <div class="col buttons" [ngClass]="{'border-bot-morado border-bot': vista == 2}">
+            <button mat-flat-button><mat-icon [ngClass]="{'icon-morado': vista == 2}">filter_6</mat-icon> Tarjeta</button>
+          </div>
+        </div>
+      </div>   
+
+      <div class="row">
+        <ng-container *ngIf="vista == 1">
+          <div class="scroll paddingTarjeta">
+            <table mat-table [dataSource]="list[0]?.source" class="mat-elevation-z8">      
+              <ng-container matColumnDef="codigo">
+                <mat-header-cell *matHeaderCellDef class="text-center"> Código </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-center"> {{element.codigo}} </mat-cell>
+              </ng-container>          
+              <ng-container matColumnDef="departamento">
+                <mat-header-cell *matHeaderCellDef> Descripción de departamento </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.descripcion}} </mat-cell>
+              </ng-container>          
+              <ng-container matColumnDef="todo">
+                <mat-header-cell *matHeaderCellDef class="text-r">
+                  <div class="w-100">
+                    Todo&nbsp;<mat-checkbox class="example-margin" [checked]="list[0].completeChecked" [indeterminate]="list[0].checkVerify()" (change)="list[0].checkAll($event.checked)"></mat-checkbox>
+                  </div>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-r"> 
+                  <div class="w-100">
+                    <mat-checkbox [(ngModel)]="element.checked" (ngModelChange)="list[0].checkThis($event)" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                  </div>
+                </mat-cell>
+              </ng-container>
+    
+              <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Cargando información...
+                </mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Ningún Resultado.
+                </mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="error">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Error en la consulta
+                </mat-footer-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="list[0]?.columns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: list[0]?.columns;"></mat-row>
+              <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list[0]?.isSearching)}"></mat-footer-row>
+              <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list[0]?.isError)}"></mat-footer-row>
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list[0]?.isSearching && ! list[0]?.isError) ? (list[0]?.length > 0) : true)}">
+              </mat-footer-row>
+            </table>
+            <mat-paginator [length]="list[0]?.length" [pageSize]="list[0]?.size"
+              [pageSizeOptions]="list[0]?.pageSizeOptions" (page)="list[0]?.onPageChange($event)"
+              showFirstLastButtons>
+            </mat-paginator>
+          </div>
+        </ng-container>
+      
+        <ng-container *ngIf="vista == 2">
+          <div class="scroll paddingTarjeta">
+            <table mat-table [dataSource]="list[1]?.source" class="mat-elevation-z8 tableTarjeta">          
+              <ng-container matColumnDef="tipo">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'w-360px'"> Tipo de Sub Producto </mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'w-360px'"> {{element.id}} - {{element.descripcion}} </mat-cell>
+              </ng-container>          
+              <ng-container matColumnDef="todo">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'text-r'">
+                  <div class="w-100">
+                    Todo <mat-checkbox class="example-margin" [checked]="list[1].completeChecked" [indeterminate]="list[1].checkVerify()" (change)="list[1].checkAll($event.checked)"></mat-checkbox>
+                  </div>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'text-r'"> 
+                  <div class="w-100">
+                    <mat-checkbox [(ngModel)]="element.checked" (ngModelChange)="list[1].checkThis($event)" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                  </div>
+                </mat-cell>
+              </ng-container>
+              
+              <ng-container matColumnDef="loading">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Cargando información...
+                </mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Ningún Resultado.
+                </mat-footer-cell>
+              </ng-container>
+              <ng-container matColumnDef="error">
+                <mat-footer-cell *matFooterCellDef colspan="6">
+                  Error en la consulta
+                </mat-footer-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="list[1]?.columns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: list[1]?.columns;"></mat-row>
+              <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list[1]?.isSearching)}"></mat-footer-row>
+              <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list[1]?.isError)}"></mat-footer-row>
+              <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list[1]?.isSearching && ! list[1]?.isError) ? (list[1]?.length > 0) : true)}">
+              </mat-footer-row>
+            </table>
+            <mat-paginator [length]="list[1]?.length" [pageSize]="list[1]?.size"
+              [pageSizeOptions]="list[1]?.pageSizeOptions" (page)="list[1]?.onPageChange($event)"
+              showFirstLastButtons>
+            </mat-paginator>
+          </div>
+        </ng-container>
+      </div>   
+    </div>
+    <div class="col s12 m6 l6">  
+      <ng-container>
+        <div class="row mt-25">
+          <div class="col s12 m6 l6">
+            <div class="row">
+              <div class="col s1 m1 l1 offset-s1 offset-m1 offset-l1">
+                <mat-icon [ngClass]="{'icon-morado': true}">filter_7</mat-icon>                
+              </div>
+              <div class="col s4 m4 l4 text-left">
+                &nbsp;<label class="filter-label">Plazos</label>                
+              </div>
+            </div>
+          </div>
+          <div class="col s12 m6 l6 text-r">
+            <button mat-raised-button class="btn-new-customer" (click)="newPlazo()"
+                [disabled]="(list[2]?.length > 0)"
+              >
+              <span class="material-icons">
+                add_box
+              </span>
+              Agregar Plazo
+            </button>
+          </div>
+        </div>
+
+        <div class="scroll paddingTarjeta">
+          <table mat-table [dataSource]="list[2]?.source" class="mat-elevation-z8">  
+            <ng-container matColumnDef="descripcion">
+              <mat-header-cell *matHeaderCellDef [ngClass]="'w-180px'"> Tipo </mat-header-cell>
+              <mat-cell *matCellDef="let element" [ngClass]="'w-180px'"> {{element.descripcion}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="plazoMinimo">
+              <mat-header-cell *matHeaderCellDef> Desde </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.plazoMinimo}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="plazoMaximo">
+              <mat-header-cell *matHeaderCellDef> Hasta </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.plazoMaximo}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="editar">
+              <mat-header-cell *matHeaderCellDef [ngClass]="'text-r'">Editar</mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'text-r'">
+                <button mat-icon-button (click)="editPlazo(row)">
+                  <span class="material-icons btn-actions">
+                    edit
+                  </span>
+                </button>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="eliminar">
+              <mat-header-cell *matHeaderCellDef [ngClass]="'text-r'">
+                <div class="w-100">
+                  Eliminar
+                </div>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'text-r'">
+                <div class="w-100">
+                  <button mat-icon-button color="warn" (click)="deletePlazo(row)">
+                    <span class="material-icons btn-action-delete">
+                      delete
+                    </span>
+                  </button>
+                </div>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="loading">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                Cargando información...
+              </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="noData">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                Ningún Resultado.
+              </mat-footer-cell>
+            </ng-container>
+            <ng-container matColumnDef="error">
+              <mat-footer-cell *matFooterCellDef colspan="6">
+                Error en la consulta
+              </mat-footer-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="list[2]?.columns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: list[2]?.columns;"></mat-row>
+            <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list[2]?.isSearching)}"></mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list[2]?.isError)}"></mat-footer-row>
+            <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list[2]?.isSearching && ! list[2]?.isError) ? (list[2]?.length > 0) : true)}">
+            </mat-footer-row>
+          </table>
+        </div>
+      </ng-container>   
+    </div>   
+  </div>
+
+  <div class= "row mt-4">
+    <div class="col s1">
+      <button mat-stroked-button class="btn-morado" [disabled]="(vista < 2)" (click)="modificarVista(0)">Volver</button>
+    </div>
+    <div class="col s1">
+      <button mat-stroked-button class="btn-morado" [disabled]="(vista > 1)" (click)="modificarVista(1)">Siguiente</button>
+    </div>
+    <div class="col s2 offset-m8 offset-l8 txt-end">
+    <!--  <button mat-stroked-button class="btn-morado bck-morado" (click)="test()"><label style="color: white;">TEST</label></button>
+    -->
+      <button mat-stroked-button class="btn-morado bck-morado" [disabled]="apiForm.formGroup.invalid || !list[0].someChecked || !list[1].someChecked || list[2].length == 0" (click)="action()"><label style="color: white;">{{textoBoton}}</label></button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,207 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title">Emitir Certificado</label>
+  </div>
+</div>
+
+<div class="container mt-60">
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <form [formGroup]="apiForm.formGroup" novalidate>
+
+        <div class="row"><br />
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Tipo de Documento</label><br>
+            <label>{{data.descripcionDocumento}}</label>
+          </div>
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Nombre</label><br>            
+            <label>{{data.nombres}}</label>
+          </div>
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Apellido Materno</label><br>            
+            <label>{{data.apellidoMaterno}}</label>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Número de Documento</label><br>            
+            <label>{{data.numeroDocumento}}</label>
+          </div>
+
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Apellido Paterno</label><br>            
+            <label>{{data.apellidoPaterno}}</label>
+          </div>          
+        </div>
+        
+        <div class="row">
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Establecimiento</label><br>
+            <ng-container *ngIf="establecimientos == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="establecimientos != null">
+              <mat-form-field class="select-height-form w-100 mt-20">
+                <mat-select style="height: 30px;" formControlName="establecimiento"
+                  [errorStateMatcher]="errorMatcher" (selectionChange)="selectedValueEstablecimiento($event)">
+                  <mat-option [value]="">Seleccionar</mat-option>
+                  <mat-option *ngFor="let item of establecimientos" [value]="item.id" >
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('establecimiento').touched && apiForm.getField('establecimiento').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Puntos a descontar</label><br>            
+            <ng-container>
+              <mat-form-field class="select-height-form w-100">
+                <mat-form-field>
+                  <input matInput formControlName="puntosDescuento" class="input-height-form"
+                  (keypress)="apiValidator.keyPress($event, ['number']);"
+                  (change)="resetPuntajeMinimo(null)"
+                  maxlength="8"
+                   />
+                </mat-form-field>
+                <mat-error *ngIf="apiForm.getField('puntosDescuento').touched && apiForm.getField('puntosDescuento').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+                <mat-error *ngIf="apiForm.getField('puntosDescuento').errors?.pattern">
+                  {{apiValidator.patternMessage(['number'], 8)}}
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Valorado</label><br>
+            <ng-container *ngIf="valorados == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="valorados != null && valorados?.length == 0">
+              <p>
+                <strong><label>No existe valorado disponible</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="valorados != null && valorados?.length > 0">
+              <mat-form-field class="select-height-form w-100 mt-20">
+                <mat-select style="height: 30px;" formControlName="valorado"
+                  [errorStateMatcher]="errorMatcher" (selectionChange)="selectedValueValorado($event)">
+                  <mat-option [value]="">Seleccionar</mat-option>
+                  <mat-option *ngFor="let item of valorados" [value]="item.id">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('valorado').touched && apiForm.getField('valorado').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div> 
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Observación</label><br>            
+            <ng-container>
+              <mat-form-field class="select-height-form w-100">
+                <mat-form-field>
+                  <input matInput formControlName="observacion" class="input-height-form"
+                    (keypress)="apiValidator.keyPress($event, ['name']);"
+                   />
+                </mat-form-field>
+                <mat-error *ngIf="apiForm.getField('observacion').touched && apiForm.getField('observacion').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+                <mat-error *ngIf="apiForm.getField('observacion').errors?.pattern">
+                  {{apiValidator.patternMessage(['name'])}}
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>                
+        </div>
+        <div class="row">
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Sucursal de emisión</label><br>
+            <ng-container *ngIf="sucursales == null && valorados == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="valorados != null && valorados?.length == 0">
+              <p>
+                <strong><label>No existe sucursal disponible</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="sucursales != null && sucursales?.length == 0">
+              <p>
+                <strong><label>No existe sucursal disponible</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="sucursales != null && sucursales?.length > 0">
+              <mat-form-field class="select-height-form w-100 mt-20">
+                <mat-select style="height: 30px;" formControlName="sucursal"
+                  [errorStateMatcher]="errorMatcher">
+                  <mat-option [value]="">Seleccionar</mat-option>
+                  <mat-option *ngFor="let item of sucursales" [value]="item.id">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('sucursal').touched && apiForm.getField('sucursal').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Tipo de Tarjeta</label><br>
+            <ng-container *ngIf="tipoTarjetas == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="tipoTarjetas != null">
+              <mat-form-field class="select-height-form w-100 mt-20">
+                <mat-select style="height: 30px;" formControlName="tipoTarjeta"
+                  [errorStateMatcher]="errorMatcher" (selectionChange)="selectedValueTarjeta($event)">
+                  <mat-option *ngFor="let item of tipoTarjetas" [value]="item.id">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('tipoTarjeta').touched && apiForm.getField('tipoTarjeta').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>               
+        </div>
+        <div class="row">
+          <div class="col s2 m2 l2">
+            <button class="btn-save" mat-raised-button (click)="vistaPrevia()" [disabled]="apiForm.formGroup.invalid">VISTA PREVIA</button>
+          </div>
+          <div class="col s2 m2 l2">
+            <button class="btn-save" mat-raised-button (click)="emitir()" [disabled]="apiForm.formGroup.invalid">EMITIR</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>  
+</div>

@@ -1,0 +1,74 @@
+<div style="display: flex;">
+  <div style="flex: 1 1 5%; min-height: 100vh; background-color: #523078;" (click)="drawer.toggle();">
+    <div class="buttons">
+      <a class="star"><img src="assets/imagenes/estrella.png" /></a>
+      <a class="option-menu "><img src="assets/imagenes/menu-icon.png" /></a>
+      <a class="option-menu "><img src="assets/imagenes/menu-icon.png" /></a>
+      <a class="option-menu "><img src="assets/imagenes/menu-icon.png" /></a>
+      <a class="option-menu "><img src="assets/imagenes/menu-icon.png" /></a>
+      <a class="option-menu "><img src="assets/imagenes/menu-icon.png" /></a>
+      <a class="option-menu "><img src="assets/imagenes/menu-icon.png" /></a>
+      <a class="option-menu "><img src="assets/imagenes/menu-icon.png" /></a>
+    </div>
+  </div>
+  <mat-drawer-container class="example-container-2" autosize>
+    <mat-drawer #drawer class="example-sidenav" mode="over">
+      <div class="menu-title ">
+        SRP
+      </div>
+
+      <div class="">
+        <ul>
+          <li style="margin-top: 30px;">
+            <a class="menu-option-route menu-option-route-text" [routerLink]="['/Reglas/Acumulacion/Bandeja']">Acumulación</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/Reglas/Canje/Bandeja">Canjes</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/Reglas/Establecimiento/Bandeja">Establecimientos</a><br>
+
+            <a class="menu-option-route menu-option-route-text" routerLink="/BuscarPuntosCuentas">Actualización</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/PrecargaCampaña">Cargar Campañas</a><br>
+
+            <a class="menu-option-route menu-option-route-text" routerLink="/DetallesErroresProceso">Detalles Errores Proceso</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/Ajustes">Ajustes</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/CuadroDiario">Cuadre Diario</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/DiarioAjustes">Diario de Ajustes</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/AcumuladoAjustes">Acumulado de Ajustes</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/MovimientosMes">Movimientos del Mes</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/StockMensual">Stock Mensual</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/CanjeEstablecimientos">Canje de Establecimientos</a><br>
+
+            <a class="menu-option-route menu-option-route-text" routerLink="/emisionCertificados">Emisión de Certificados</a><br>
+
+            <a class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Parametro/Bandeja">Mante. Parametro</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/Mantenimiento/Sucursal/Bandeja">Mante. Sucursales</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/tipo-clientes">Mante. Tipo Clientes</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/mantencion-reporte">Mante. Reporte</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/reglas-vencimiento">Mante. Reglas de Vencimiento</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/ListaEstablecimientosAfiliados">Mante. Establecimientos Afiliados</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/StockFinalPuntos">Mante. Stock Final Puntos</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/ListaTipoVencimiento">Mante. Tipos de Vencimiento</a><br>
+            <a class="menu-option-route menu-option-route-text" routerLink="/ListaEmailProceso">Mante. Email Por Proceso</a><br>
+        </ul>
+      </div>
+    </mat-drawer>
+    <div class="example-sidenav-content">
+      <div class="box-container">
+        <div class="box-left">
+          <div class="text-title">
+            {{title}}
+          </div>
+        </div>
+        <div class="box-right">
+          <div class="text-name">
+            <span class="text-user">hola user</span>
+            <br>
+            <br>
+            <span class="text-logout" (click)="logout()">Cerrar sesión</span>
+          </div>
+          <div id="img-user">
+          </div>
+        </div>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-container>
+</div>

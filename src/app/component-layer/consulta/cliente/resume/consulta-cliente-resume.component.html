@@ -1,0 +1,191 @@
+<div class="row">
+  <div class="col s12 m12 l9">
+    <label class="label-estado">Estado de Cuenta</label>
+    <span class="fill-remaining-space"></span>
+  </div>
+  <div class="col s12 m12 l3 float-right">    
+    <div [ngClass]="{'segmentos-puntos-dorado': apiForm.model.segmento == 'GOLD', 'segmentos-puntos-silver': apiForm.model.segmento == 'SILVER', 'segmentos-puntos-morado': apiForm.model.segmento == 'RIPLEY'}">
+      <mat-icon class="icono-estrella float-right">star</mat-icon>
+      <label class="label-segmento">Segmento: </label>
+      <label class="label-segmento2">{{apiForm.model.segmento}}</label>
+    </div>
+  </div>
+</div>
+
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s12 m12 l9">
+      <h1 class="label-numero">Número de Documento: &nbsp;&nbsp;<span>{{apiForm.model.numeroDocumento}}</span></h1>
+    </div>
+    <div class="col s2 m12 l3 float-right">
+      <div class="gold-puntos2">
+        <label class="label-puntos">Puntos Calificables:</label>
+        <label class="label-puntos-numero">{{apiForm.model.ptosDisponibles | number}} Pnts.<span>&nbsp;</span></label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s2 m12 l12">
+      <label class="label-nombre">Nombres del Cliente: &nbsp;&nbsp;<b>{{data.cliente.nombres}}
+          {{data.cliente.apellidoPaterno}} {{data.cliente.apellidoMaterno}}</b></label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s2 m12 l4">
+      <label class="label-fecha">Fecha de Registro: &nbsp;&nbsp;<span>{{apiForm.model?.fechaCorte}}</span></label>
+    </div>
+
+    <div class="col s12 m12 l5">
+      <label class="label-hora">Hora: &nbsp;&nbsp;<span>{{apiForm.model?.horaCorte}}</span></label>
+    </div>
+
+    <div class="col s12 m12 l3 float-right">
+      <div class="gold-puntos3">
+        <label class="label-segmento3">Puntos que faltan para el siguiente<br></label>
+        <label class="label-segmento3">segmento<br></label>
+        <label class="label-puntos-numero2">{{apiForm.model?.ptosFaltantesSiguientes}}</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m12 l9">
+      <mat-tab-group>
+        <mat-tab label="Total de Puntos Actuales">
+          <div class="tabla-lista s12 m12 l12">
+            <div class="col s12 m12 l12">
+              <div class="row mt-20">
+                <div class="col s12 m12 l10">
+                  <label class="label-puntos">Puntos Disponibles</label>
+                </div>
+                <div class="col s12 m12 l2 text-r">
+                  <label class="label-resultado">{{roundUp(apiForm.model?.ptosActivos)}}</label>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="row mt-20">
+                <div class="col s12 m12 l10">
+                  <label class="label-puntos">Puntos Canjeados</label>
+                </div>
+                <div class="col s12 m12 l2 text-r">
+                  <label class="label-resultado">{{roundUp(apiForm.model?.ptosCanjeados)}}</label>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="row mt-20">
+                <div class="col s12 m12 l10">
+                  <label class="label-puntos">Puntos Inactivos</label>
+                </div>
+                <div class="col s12 m12 l2 text-r">
+                  <label class="label-resultado">{{roundUp(apiForm.model?.ptosInactivos)}}</label>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="row mt-20">
+                <div class="col s12 m12 l10">
+                  <label class="label-puntos">Puntos Anulados</label>
+                </div>
+                <div class="col s12 m12 l2 text-r">
+                  <label class="label-resultado">{{roundUp(apiForm.model?.ptosAnulados)}}</label>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="row mt-20">
+                <div class="col s12 m12 l10">
+                  <label class="label-puntos-total">TOTAL</label>
+                </div>
+                <div class="col s12 m12 l2 text-r">
+                  <label class="label-resultado-total">
+                    {{roundUp(apiForm.model?.ptosActivos)}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Estado del Último Periodo">
+          <div class="tabla-lista s12 m12 l12">
+            <div class="col s12 m12 l12">
+              <div class="row mt-20">
+                <div class="col s12 m12 l10">
+                  <label class="label-puntos">Saldo Anterior</label>
+                </div>
+                <div class="col s12 m12 l2 text-r">
+                  <label class="label-resultado">{{apiForm.model?.ptosDisponiblesAnterior}}</label>
+                </div>
+              </div>              
+              <mat-divider></mat-divider>
+              <div class="row mt-20">
+                <div class="col s12 m12 l10">
+                  <label class="label-puntos">Puntos Canjeados</label>
+                </div>
+                <div class="col s12 m12 l2 text-r">
+                  <label class="label-resultado">{{roundUp(apiForm.model?.ptosCanjeadosAnterior)}}</label>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="row mt-20">
+                <div class="col s12 m12 l10">
+                  <label class="label-puntos">Puntos Vencidos</label>
+                </div>
+                <div class="col s12 m12 l2 text-r">
+                  <label class="label-resultado">{{roundUp(apiForm.model?.ptosVencidosAnterior)}}</label>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="row mt-20">
+                <div class="col s12 m12 l10">
+                  <label class="label-puntos-total">TOTAL</label>
+                </div>
+                <div class="col s12 m12 l2 text-r">
+                  <label class="label-resultado-total">
+                    {{roundUp(apiForm.model?.ptosDisponiblesAnterior)}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 m12 l9">
+      <div class="row">
+        <div class="col s12 m12 l6">
+            <button mat-raised-button class="button-canjes" (click)="canje();">VER CANJES</button>
+        </div>
+        <div class="col s12 m12 l6">
+          <button mat-raised-button class="button-historico" (click)="historico();">HISTÓRICO</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12 m12 l6">
+          <button mat-raised-button class="button-movimientos" (click)="reciente();">10 ÚLT.MOVIMIENTOS</button>
+        </div>
+        <div class="col s12 m12 l6" *ngIf="isAlternative">
+          <button mat-raised-button class="button-movimientos" (click)="actualizar();">AGREGAR / QUITAR</button>
+        </div>
+      </div>
+    </div>    
+    <div class="col s12 m12 l3">
+      <div class="warning-puntos">
+        <div class="col s8 m8 l8">
+          <mat-icon class="icono-advertencia">warning</mat-icon>
+          <label class="label-puntos-numero3">{{apiForm.model?.ptosPorVencer?.toString().trim()}} Puntos</label>
+        </div>
+        <div class="col s4 m4 l4 mt-25">
+          <label class="label-segmento4">Vence: {{apiForm.model?.fechaVencimiento}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s6 m3 l3 offset-s6 offset-m9 offset-l9 text-r">
+      <button class="btn-save" mat-raised-button (click)="close()">Nueva Búsqueda</button>
+    </div>
+  </div>
+</form>

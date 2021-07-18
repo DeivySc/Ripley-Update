@@ -1,0 +1,159 @@
+<div class="container mt-60">
+  <div class="row" *ngIf="stepView == 1">
+    <div class="col s12 m9 l9">
+      <form [formGroup]="apiForm.formGroup" novalidate>
+        <div class="row">
+          <div class="col s12 m12 l12">
+            <label class="filter-label">Grupo</label><br>
+            <ng-container *ngIf="groups == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="groups != null">
+              <mat-form-field class="select-height-form w-100">
+                <mat-select style="height: 30px;" formControlName="codigoAjuste"
+                  [errorStateMatcher]="errorMatcher"
+                  (selectionChange)="onChangeSelected($event)">
+                  <mat-option *ngFor="let item of groups" [value]="item.codigo">
+                    {{item.codigo}} - {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('codigoAjuste').touched && apiForm.getField('codigoAjuste').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+            
+        <div class="row">
+          <div class="col s12 m12 l12">
+            <div class="box-container box" *ngIf="(apiForm.model.archivoBase == null)">
+              <div class="row">
+                <div style="color: #624792; text-align: center; margin-bottom: 10px;">
+                  <span class="material-icons" style="font-size: 40px;">
+                    upload_file
+                  </span>
+                </div>
+                <div style="margin-bottom: 10px;text-align: center;">
+                  <p>Máximo 10 mb</p>
+                </div>
+                <button mat-raised-button class="btn-report btn" style="width: 150px;">
+                  <input class="btn-file" id="singleFile" formControlName="nombreArchivo" (change)="changeListener($event)"
+                    type="file" accept="" multiple />
+                  Subir archivo
+                </button>
+              </div>
+            </div>
+            <div class="box-container box" *ngIf="(apiForm.model.archivoBase != null)">
+              <strong>Archivo Cargado</strong>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+    <div class="col s12 m3 l3 text-r">
+      <button mat-raised-button class="btn-register" (click)="precarga()" [disabled]="apiForm.formGroup.invalid || apiForm.model.archivoBase == null || apiForm.model.archivoBase == ''">
+        <span class="material-icons">
+          done
+        </span>
+        Confirmar
+      </button>
+      <br />
+      <br />
+      <button mat-raised-button (click)="reset()" class="w-100" [disabled]="apiForm.formGroup.invalid || apiForm.model.archivoBase == null || apiForm.model.archivoBase == ''">
+        <span class="material-icons">
+          cancel
+        </span>
+        Cancelar
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-20">
+    <div class="col s12 m12 l12">
+      <label class="filter-label">Campañas Pre-Cargadas</label><br><br>
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="list?.source" (matSortChange)="list.onSortChange($event)">
+          <ng-container matColumnDef="codigo">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-120px'" mat-sort-header>Código</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-120px'">{{element.id}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="archivo">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-240px'">Archivo</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-240px'">{{element.nombreArchivo}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="usuario">
+            <mat-header-cell *matHeaderCellDef>Usuario</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.usuario}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="fecha">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.fechaCarga}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="campania">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-240px'">Campaña</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-240px'">{{element.campania}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="estadoCarga">
+            <mat-header-cell *matHeaderCellDef>Estado</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.estadoCarga}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cantidad">
+            <mat-header-cell *matHeaderCellDef>Cantidad</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.cantidad}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="puntos">
+            <mat-header-cell *matHeaderCellDef>Puntos</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.puntos}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="detalle">
+            <mat-header-cell *matHeaderCellDef>
+              <div class="w-100 text-r">
+                Detalle
+              </div>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <div class="w-100 text-r">
+                <button mat-icon-button (click)="detail(row)">
+                  <span class="material-icons color-icon">
+                    remove_red_eye
+                  </span>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="list?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: list?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list?.isSearching && ! list?.isError) ? (list?.length > 0) : true)}">
+          </mat-footer-row>
+        </table>
+        <mat-paginator #TablePaginator="matPaginator" [length]="list?.length" [pageSize]="list?.size"
+          [pageSizeOptions]="list?.pageSizeOptions" (page)="list?.onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

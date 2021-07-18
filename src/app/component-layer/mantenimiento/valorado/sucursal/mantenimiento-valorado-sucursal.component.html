@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title">Nueva Sucursal</label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <div class="table-lista">
+      <table mat-table matSort [dataSource]="list.source">
+
+        <ng-container matColumnDef="codigo">
+          <mat-header-cell *matHeaderCellDef>Código</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.codigo}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="descripcion">
+          <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.descripcion}}</mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef class="text-r">
+            <div class="w-100">
+              Todo&nbsp;<mat-checkbox class="example-margin" [checked]="list.completeChecked" [indeterminate]="list.checkVerify()" (change)="list.checkAll($event.checked)"></mat-checkbox>
+            </div>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element" class="text-r"> 
+            <div class="w-100">
+              <mat-checkbox [(ngModel)]="element.checked" (ngModelChange)="list.checkThis($event, element)" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="loading">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            Cargando información...
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            Ningún Resultado.
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="error">
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            Error en la consulta
+          </mat-footer-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="list.columns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: list.columns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list.isSearching)}"></mat-footer-row>
+        <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list.isError)}"></mat-footer-row>
+        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list.isSearching && ! list.isError) ? (list.source.length > 0) : true)}">
+        </mat-footer-row>
+      </table>
+      <mat-paginator [length]="list.length" [pageSize]="list.size"
+        [pageSizeOptions]="list.pageSizeOptions" (page)="list.onPageChange($event)"
+        showFirstLastButtons>
+      </mat-paginator>
+    </div>
+  </div>
+
+
+  <div class="col s12 m12 l12 mt-40">
+    <button class="btn-save" mat-raised-button (click)="action()" [disabled]="list.checkeds.length == 0">
+      Guardar
+    </button>
+  </div>
+
+</div>

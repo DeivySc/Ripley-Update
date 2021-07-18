@@ -1,0 +1,205 @@
+<div class="container mt-60">
+
+  <div class="row">
+    <div class="col s9 m9 l9">
+      <form [formGroup]="apiForm.formGroup" novalidate>
+
+        <div class="row">
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Mes</label><br>
+          <mat-form-field class="select-height-form">
+            <mat-select style="height: 30px;"formControlName="mes">
+              <mat-option *ngFor="let item of periodos" [value]="item.descripcion">
+                {{item.comentario}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="apiForm.getField('mes').touched && apiForm.getField('mes').errors?.required">
+              Este campo es requerido
+            </mat-error>
+          </mat-form-field>
+          </div>
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Año</label><br>
+            <mat-form-field>
+              <input matInput class="input-height-form" formControlName="anio"
+                (keypress)="apiValidator.keyPress($event, ['number']);"
+                maxlength="4" minlength="4" />
+            </mat-form-field>
+            <mat-error *ngIf="apiForm.getField('anio').touched && apiForm.getField('anio').errors?.required">
+              Este campo es requerido
+            </mat-error>
+          </div>
+
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Tipo de Tarjeta</label><br>
+            <ng-container *ngIf="sublist == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="sublist != null">
+              <mat-form-field class="select-height-form w-100">
+                <mat-select style="height: 30px;" formControlName="tipoTarjeta"
+                  [errorStateMatcher]="errorMatcher">
+                  <mat-option value="">TODAS</mat-option>
+                  <mat-option *ngFor="let item of sublist" [value]="item.id">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('tipoTarjeta').touched && apiForm.getField('tipoTarjeta').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <div class="col s6 m3 l3">
+      <button mat-raised-button class="btn-register" (click)="search()" [disabled]="apiForm.formGroup.invalid">
+        <span class="material-icons">
+          search
+        </span>
+        Ver Reporte
+      </button>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col s12 m6 lg6">
+      <button mat-raised-button class="button-copiar" (click)="copiar()" [disabled]="!(list?.length > 0)">
+        <span class="material-icons">
+          file_download
+        </span>
+        Exportar Excel
+      </button>
+    </div>
+  </div>
+  
+  <div class="row mt-20">
+    <div class="col s12 m12 l12">
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="list?.source" (matSortChange)="list.onSortChange($event)">
+          
+          <ng-container matColumnDef="Fecha">
+            <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.fecha}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Huerut">
+            <mat-header-cell *matHeaderCellDef>Huerut</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.huerutV}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="SRP">
+            <mat-header-cell *matHeaderCellDef>SRP</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.srpV}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="LOG">
+            <mat-header-cell *matHeaderCellDef>LOG</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.logsV}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="DIF">
+            <mat-header-cell *matHeaderCellDef>DIF</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.difV}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="%">
+            <mat-header-cell *matHeaderCellDef>%</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.porcV}}</mat-cell>
+          </ng-container>
+
+
+
+          <ng-container matColumnDef="Huerut C">
+            <mat-header-cell *matHeaderCellDef>Huerut</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.huerutC}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="SRP C">
+            <mat-header-cell *matHeaderCellDef>SRP</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.srpC}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="LOG C">
+            <mat-header-cell *matHeaderCellDef>LOG</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.logsC}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="DIF C">
+            <mat-header-cell *matHeaderCellDef>DIF</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.difC}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="% C">
+            <mat-header-cell *matHeaderCellDef>%</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.porcC}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Huerut J">
+            <mat-header-cell *matHeaderCellDef>Huerut</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.huerutJ}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="SRP J">
+            <mat-header-cell *matHeaderCellDef>SRP</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.srpJ}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="LOG J">
+            <mat-header-cell *matHeaderCellDef>LOG</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.logsJ}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="DIF J">
+            <mat-header-cell *matHeaderCellDef>DIF</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.difJ}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="% J">
+            <mat-header-cell *matHeaderCellDef>%</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.porcJ}}</mat-cell>
+          </ng-container>
+         
+          <ng-container matColumnDef="Huerut R">
+            <mat-header-cell *matHeaderCellDef>Huerut</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.huerutR}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="SRP R">
+            <mat-header-cell *matHeaderCellDef>SRP</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.srpR}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="LOG R">
+            <mat-header-cell *matHeaderCellDef>LOG</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.logsR}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="DIF R">
+            <mat-header-cell *matHeaderCellDef>DIF</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.difR}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="% R">
+            <mat-header-cell *matHeaderCellDef>%</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.porcR}}</mat-cell>
+          </ng-container>
+          
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="list?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: list?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list?.isSearching && ! list?.isError) ? (list?.length > 0) : true)}">
+          </mat-footer-row>
+        </table>
+        <!--<mat-paginator #TablePaginator="matPaginator" [length]="list?.length" [pageSize]="list?.size"
+          [pageSizeOptions]="list?.pageSizeOptions" (page)="list?.onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>-->
+      </div>
+    </div>
+  </div>
+</div>

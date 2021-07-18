@@ -1,0 +1,217 @@
+<div class="row">
+  <div class="col s12 m12 l12 text-align-right">
+    <button class="btn-close" mat-stroked-button (click)="close()" tabIndex="-1">
+      <span class="material-icons span-icon">
+        close
+      </span>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s12 m12 l12">
+    <label class="title" *ngIf="data.isEdit === false">Nueva Surcursal</label>
+    <label class="title" *ngIf="data.isEdit === true">Editar Surcursal</label>
+  </div>
+</div>
+
+<form [formGroup]="apiForm.formGroup" novalidate>
+  <div class="row">
+    <div class="col s12 m6 l6" *ngIf="data.isEdit === false">
+      <label class="filter-label">Código</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="" formControlName="codigo" class="input-height-form"
+          [errorStateMatcher]="errorMatcher"  maxlength="10"
+          (keypress)="apiValidator.keyPress($event, ['number']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('codigo').touched && apiForm.getField('codigo').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('codigo').errors?.min">
+        Este campo debe ser mayor o igual a 1
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('codigo').errors?.max">
+        Este campo debe ser menor o igual a 9999999999
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('codigo').errors?.pattern">
+        {{apiValidator.patternMessage(['number'])}}
+      </mat-error>
+    </div>
+    <div class="col s12 m6 l6" *ngIf="data.isEdit === true">
+      <label class="filter-label">Código</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="{{apiForm.model?.codigo}}" disabled class="input-height-form" />
+      </mat-form-field>
+    </div>
+    <div class="col s12 m6 l6">
+      <label class="filter-label">Descripción</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="" formControlName="descripcion" class="input-height-form"
+          [errorStateMatcher]="errorMatcher" maxlength="50"
+          (keypress)="apiValidator.keyPress($event, ['text']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('descripcion').touched && apiForm.getField('descripcion').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('descripcion').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 m12 l12" *ngIf="data.isEdit === false">
+      <label class="filter-label">Dirección</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="" formControlName="direccion" class="input-height-form"
+          [errorStateMatcher]="errorMatcher" maxlength="100"
+          (keypress)="apiValidator.keyPress($event, ['address']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('direccion').touched && apiForm.getField('direccion').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('direccion').errors?.pattern">
+        {{apiValidator.patternMessage(['address'])}}
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m6 l6" *ngIf="data.isEdit === true">
+      <label class="filter-label">Estado</label>
+      <mat-radio-group aria-label="Select an option" formControlName="estado"><br>
+        <mat-radio-button value="1" [checked]="true">Activo</mat-radio-button>
+        <mat-radio-button value="0">Inactivo</mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="apiForm.getField('estado').touched && apiForm.getField('estado').errors?.required">
+        Este campo es requerido
+      </mat-error>
+    </div>
+    <div class="col s12 m6 l6" *ngIf="data.isEdit === true">
+      <label class="filter-label">Dirección</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="" formControlName="direccion" class="input-height-form"
+          (keypress)="apiValidator.keyPress($event, ['address']);"
+          [errorStateMatcher]="errorMatcher">
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('direccion').touched && apiForm.getField('direccion').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('direccion').errors?.pattern">
+        {{apiValidator.patternMessage(['address'])}}
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m6 l6">
+      <label class="filter-label">RUC</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="" formControlName="ruc" min="0" class="input-height-form"
+          [errorStateMatcher]="errorMatcher" maxlength="11"
+          (keypress)="apiValidator.keyPress($event, ['number']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('ruc').touched && apiForm.getField('ruc').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('ruc').errors?.minlength || apiForm.getField('ruc').errors?.maxlength">
+        Este campo debe tener 11 dígitos
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('ruc').errors?.pattern">
+        {{apiValidator.patternMessage(['number'])}}
+      </mat-error>
+    </div>
+    <div class="col s12 m6 l6">
+      <label class="filter-label">Ciudad</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="" formControlName="ciudad" class="input-height-form"
+          [errorStateMatcher]="errorMatcher" maxlength="50"
+          (keypress)="apiValidator.keyPress($event, ['text']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('ciudad').touched && apiForm.getField('ciudad').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('ciudad').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12 m6 l6">
+      <label class="filter-label">Distrito</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="" formControlName="distrito" class="input-height-form"
+          [errorStateMatcher]="errorMatcher" maxlength="100" 
+          (keypress)="apiValidator.keyPress($event, ['text']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('distrito').touched && apiForm.getField('distrito').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('distrito').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+    <div class="col s12 m6 l6">
+      <label class="filter-label">Surcusal Equivalente</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="" formControlName="sucursalEquivalencia" class="input-height-form"
+          [errorStateMatcher]="errorMatcher" maxlength="10"
+          (keypress)="apiValidator.keyPress($event, ['number']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('sucursalEquivalencia').touched && apiForm.getField('sucursalEquivalencia').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('sucursalEquivalencia').errors?.min">
+        Este campo debe ser mayor o igual a 1
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('sucursalEquivalencia').errors?.max">
+        Este campo debe ser menor o igual a 9999999999
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('sucursalEquivalencia').errors?.pattern">
+        {{apiValidator.patternMessage(['number'])}}
+      </mat-error>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s12 m6 l6">
+      <label class="filter-label">Nombre</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="" formControlName="nombre" class="input-height-form"
+          [errorStateMatcher]="errorMatcher" 
+          (keypress)="apiValidator.keyPress($event, ['text']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('nombre').touched && apiForm.getField('nombre').errors?.required">
+        Este campo es requerido
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('nombre').errors?.pattern">
+        {{apiValidator.patternMessage(['text'])}}
+      </mat-error>
+    </div>
+    <div class="col s12 m6 l6" *ngIf="! data.isEdit">
+      <label class="filter-label">Surcusal Base</label>
+      <mat-form-field>
+        <input matInput placeholder="" value="" formControlName="sucursalBase" class="input-height-form"
+          [errorStateMatcher]="errorMatcher" maxlength="10"
+          (keypress)="apiValidator.keyPress($event, ['number']);" />
+      </mat-form-field>
+      <mat-error *ngIf="apiForm.getField('sucursalBase').errors?.min">
+        Este campo debe ser mayor o igual a 1
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('sucursalBase').errors?.max">
+        Este campo debe ser menor o igual a 9999999999
+      </mat-error>
+      <mat-error *ngIf="apiForm.getField('sucursalBase').errors?.pattern">
+        {{apiValidator.patternMessage(['number'])}}
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row mt-60">
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit == false">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Guardar</button>
+    </div>
+    <div class="col s12 m12 l12 " *ngIf="data.isEdit == true">
+      <button class="btn-save" mat-raised-button (click)="action()" [disabled]="apiForm.formGroup.invalid">Actualizar</button>
+    </div>
+  </div>
+</form>

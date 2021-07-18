@@ -1,0 +1,68 @@
+.btn-close {
+  border-radius: 20px;
+  border-color: #7766ad;
+  background: #7766ad;
+}
+
+.btn-close .span-icon {
+  color: #ffffff;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.filter-label {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.0015em;
+  color: #523078;
+}
+
+.title {
+  color: #624792;
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 44px;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.sub-title {
+  font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 29px;
+  letter-spacing: 0.2px;
+  color: #624792;
+}
+
+.label-data {
+  /* font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif; */
+  /* font-style: normal; */
+  /* font-weight: 300; */
+  color: #000000;
+}
+
+.label-data-value {
+  /* font-family: Montserrat, Verdana, Geneva, Tahoma, sans-serif; */
+  /* font-style: normal; */
+  /* font-weight: 500; */
+  color: #000000;
+}
+
+.btn-save {
+  background: #523078;
+  border-radius: 10px;
+  color: #f7f7fc;
+  height: 60px;
+  width: 100%;
+}

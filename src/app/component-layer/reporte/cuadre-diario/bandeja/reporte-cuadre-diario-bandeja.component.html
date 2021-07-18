@@ -1,0 +1,240 @@
+<div class="container mt-60">
+
+  <div class="row">
+    <div class="col s9 m9 l9">
+      <form [formGroup]="apiForm.formGroup" novalidate>
+
+        <div class="row">
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Fecha Inicio</label><br>
+            <mat-form-field appearance="fill">
+              <input formControlName="fechaInicio" [errorStateMatcher]="errorMatcher"
+                readonly
+                [min]="minDateStart" [max]="maxDate" (dateChange)="getChange($event)"
+                matInput [matDatepicker]="picker1" placeholder="Inicio de Vigencia">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1 startView="month"></mat-datepicker>
+            </mat-form-field>
+            <mat-error *ngIf="apiForm.getField('fechaInicio').touched && apiForm.getField('fechaInicio').errors?.required">
+              Este campo es requerido
+            </mat-error>
+          </div>
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Fecha Fin</label>
+            <mat-form-field appearance="fill">
+              <input formControlName="fechaFin" matInput [matDatepicker]="picker2"
+                readonly
+                [min]="minDateEnd" [max]="maxDate" 
+                [errorStateMatcher]="errorMatcher" placeholder="Fin de Vigencia">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+            <mat-error *ngIf="apiForm.getField('fechaFin').touched && apiForm.getField('fechaFin').errors?.required">
+              Este campo es requerido
+            </mat-error>
+          </div>
+
+          <div class="col s4 m4 l4">
+            <label class="filter-label">Tipo de Tarjeta</label><br>
+            <ng-container *ngIf="tipoTarjetas == null">
+              <p>
+                <strong><label>Cargando...</label></strong>
+              </p>
+            </ng-container>
+            <ng-container *ngIf="tipoTarjetas != null">
+              <mat-form-field class="select-height-form w-100">
+                <mat-select style="height: 30px;" formControlName="tipoTarjeta"
+                  [errorStateMatcher]="errorMatcher">
+                  <mat-option value="">TODAS</mat-option>
+                  <mat-option *ngFor="let item of tipoTarjetas" [value]="item.id">
+                    {{item.descripcion}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="apiForm.getField('tipoTarjeta').touched && apiForm.getField('tipoTarjeta').errors?.required">
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <div class="col s6 m3 l3">
+      <button mat-raised-button class="btn-register" (click)="search()" [disabled]="apiForm.formGroup.invalid">
+        <span class="material-icons">
+          search
+        </span>
+        Ver Reporte
+      </button>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col s12 m6 lg6">
+      <button mat-raised-button class="button-copiar" (click)="copiar()" [disabled]="!(list?.length > 0)">
+        <span class="material-icons">
+          file_download
+        </span>
+        Exportar Excel
+      </button>
+    </div>
+  </div>
+  
+  <div class="row mt-20">
+    <div class="col s12 m12 l12">
+      <div class="table-lista">
+        <table mat-table matSort [dataSource]="list?.source" (matSortChange)="list.onSortChange($event)">
+          <ng-container matColumnDef="Sucursal">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-120px'">Sucursal</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-120px'">{{element.sucursal}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Huerut">
+            <mat-header-cell *matHeaderCellDef style="border-left: 4px solid #B5B5B5;text-align:center;" [ngClass]="'w-60px'">Huerut</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-60px'">{{element.huerutV}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="RSAT">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-60px'">RSAT</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-60px'">{{element.rsatV}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="SRP">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-60px'">SRP</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-60px'">{{element.srpV}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="No Acumulado">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-80px'">No Acumulado</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-80px'">{{element.nalcV}}  </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="LOG">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-60px'">LOG</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-60px'">{{element.logsV}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="DIF">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-60px'">DIF</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-60px'">{{element.difV}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Huerut C">
+            <mat-header-cell *matHeaderCellDef style="border-left: 4px solid #B5B5B5;text-align:center;" [ngClass]="'w-60px'">Huerut</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-60px'">{{element.huerutC}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="RSAT C">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-60px'">RSAT</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-60px'">{{element.rsatC}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="SRP C">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-60px'">SRP</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-60px'">{{element.srpC}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="LOG C">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-60px'">LOG</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-60px'">{{element.logsC}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="DIF C">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-60px'">DIF</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'w-60px'">{{element.difC}}</mat-cell>
+          </ng-container>
+        
+          <ng-container matColumnDef="Huerut J">
+            <mat-header-cell *matHeaderCellDef style="border-left: 4px solid #B5B5B5;text-align:center;" [ngClass]="">Huerut</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="">{{element.huerutJ}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="RSAT J">
+            <mat-header-cell *matHeaderCellDef [ngClass]="">RSAT</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="">{{element.rsatJ}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="SRP J">
+            <mat-header-cell *matHeaderCellDef [ngClass]="">SRP</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="">{{element.srpJ}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="LOG J">
+            <mat-header-cell *matHeaderCellDef [ngClass]="">LOG</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="">{{element.logsJ}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="DIF J">
+            <mat-header-cell *matHeaderCellDef [ngClass]="">DIF</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="">{{element.difJ}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Huerut R">
+            <mat-header-cell *matHeaderCellDef style="border-left: 4px solid #B5B5B5;text-align:center;" [ngClass]="">Huerut</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="">{{element.huerutR}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="RSAT R">
+            <mat-header-cell *matHeaderCellDef [ngClass]="">RSAT</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="">{{element.rsatR}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="SRP R">
+            <mat-header-cell *matHeaderCellDef [ngClass]="">SRP</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="">{{element.srpR}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="LOG R">
+            <mat-header-cell *matHeaderCellDef [ngClass]="">LOG</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="">{{element.logsR}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="DIF R">
+            <mat-header-cell *matHeaderCellDef [ngClass]="">DIF</mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="">{{element.difR}}</mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="header-row-group-none">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'w-120px'">
+            </mat-header-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="header-row-group-ventas">
+            <mat-header-cell *matHeaderCellDef colspan="6" [ngClass]="'w-360px'"> 
+              VENTAS
+            </mat-header-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="header-row-group-nc">
+            <mat-header-cell *matHeaderCellDef colspan="5" [ngClass]="'w-276px'"> 
+              NOTA DE CRÉDITO
+            </mat-header-cell>
+          </ng-container>
+         
+          <ng-container matColumnDef="header-row-group-canje">
+            <mat-header-cell *matHeaderCellDef colspan="5"> 
+              CANJE
+            </mat-header-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="header-row-group-reversa">
+            <mat-header-cell *matHeaderCellDef colspan="5"> 
+              REVERSA DE CANJE
+            </mat-header-cell>
+          </ng-container>          
+
+          <ng-container matColumnDef="loading">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Cargando información...
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="noData">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Ningún Resultado.
+            </mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="error">
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Error en la consulta
+            </mat-footer-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="['header-row-group-none', 'header-row-group-ventas', 'header-row-group-nc', 'header-row-group-canje', 'header-row-group-reversa']"></mat-header-row>
+          <mat-header-row *matHeaderRowDef="list?.columns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: list?.columns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':(! list?.isSearching)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['error']" [ngClass]="{'hide':(! list?.isError)}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':((! list?.isSearching && ! list?.isError) ? (list?.length > 0) : true)}">
+          </mat-footer-row>
+        </table>
+        <mat-paginator #TablePaginator="matPaginator" [length]="list?.length" [pageSize]="list?.size"
+          [pageSizeOptions]="list?.pageSizeOptions" (page)="list?.onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
